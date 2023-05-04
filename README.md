@@ -12,4 +12,4 @@ Mythic Progressions is a unique Minecraft mod designed to enhance your multiplay
 
 ## Support and Contributions
 
-If you encounter any issues or have suggestions for new features, please submit them to our [bug tracker and feature requests](https://discord.gg/c4UfDnAMWZ). We appreciate your feedback and contributions to help make Potato SMP the best mod it can be!
+If you encounter any issues or have suggestions for new features, please submit them to our [bug tracker and feature requests](https://discord.gg/c4UfDnAMWZ). We appreciate your feedback and contributions to help make Mythic Progressions the best mod it can be!
