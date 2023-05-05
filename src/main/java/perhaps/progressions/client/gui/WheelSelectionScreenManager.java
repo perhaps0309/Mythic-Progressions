@@ -1,4 +1,4 @@
-package perhaps.progressions;
+package perhaps.progressions.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;

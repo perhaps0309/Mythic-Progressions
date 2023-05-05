@@ -1,19 +1,19 @@
-package perhaps.progressions;
+package perhaps.progressions.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.world.phys.Vec2;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WheelSelectionScreen extends Screen {
-    private List<String> options;
+    private final List<String> options;
     private int centerX;
     private int centerY;
-    private int wheelRadius;
+    private final int wheelRadius;
     private double angleStep;
 
     protected WheelSelectionScreen() {
@@ -35,7 +35,7 @@ public class WheelSelectionScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(poseStack);
         int selectedIndex = getHoveredOptionIndex(mouseX, mouseY);
         for (int i = 0; i < options.size(); i++) {
