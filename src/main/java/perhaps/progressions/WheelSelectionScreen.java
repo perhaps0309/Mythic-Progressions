@@ -23,7 +23,7 @@ public class WheelSelectionScreen extends Screen {
         options.add("Abilities");
         options.add("Skills");
         options.add("Stats");
-        wheelRadius = 80;
+        wheelRadius = 90;
     }
 
     @Override
@@ -36,18 +36,16 @@ public class WheelSelectionScreen extends Screen {
 
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        System.out.println("waaaaaaaaa");
         this.renderBackground(poseStack);
         int selectedIndex = getHoveredOptionIndex(mouseX, mouseY);
         for (int i = 0; i < options.size(); i++) {
             drawOption(poseStack, options.get(i), i, i == selectedIndex);
         }
         super.render(poseStack, mouseX, mouseY, partialTicks);
-        System.out.println("TUKAS COMING HOME WEEE WOOO");
     }
 
     private void drawOption(PoseStack poseStack, String text, int index, boolean isSelected) {
-        double angle = Math.toRadians(index - 90);
+        double angle = Math.toRadians((index * 90) - 90);
         int x = centerX + (int) (wheelRadius * Math.cos(angle));
         int y = centerY + (int) (wheelRadius * Math.sin(angle));
         int color = 0xFFFFFF;
