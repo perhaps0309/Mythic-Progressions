@@ -1,7 +1,7 @@
 Java Launcher: C:\Program Files\Java\jdk-17\bin\java.exe
-Arguments: '--inJar, C:\Users\perhaps\.gradle\caches\forge_gradle\minecraft_user_repo\net\minecraftforge\forge\1.18.2-40.2.2\forge-1.18.2-40.2.2-injected.jar, --outJar, C:\Users\perhaps\.gradle\caches\forge_gradle\minecraft_user_repo\net\minecraftforge\forge\1.18.2-40.2.2_mapped_official_1.18.2\forge-1.18.2-40.2.2_mapped_official_1.18.2.jar, --logFile, accesstransform.log, --atFile, C:\Users\perhaps\Desktop\Mythic Progressions\build\_atJar_4\parent_at.cfg'
+Arguments: '--inJar, C:\Users\mason\.gradle\caches\forge_gradle\minecraft_user_repo\net\minecraftforge\forge\1.18.2-40.2.2\forge-1.18.2-40.2.2-injected.jar, --outJar, C:\Users\mason\.gradle\caches\forge_gradle\minecraft_user_repo\net\minecraftforge\forge\1.18.2-40.2.2_mapped_official_1.18.2\forge-1.18.2-40.2.2_mapped_official_1.18.2.jar, --logFile, accesstransform.log, --atFile, C:\Users\mason\Desktop\Mythic-Progressions\build\_atJar_4\parent_at.cfg'
 Classpath:
- - C:\Users\perhaps\.gradle\caches\forge_gradle\maven_downloader\net\minecraftforge\accesstransformers\8.0.7\accesstransformers-8.0.7-fatjar.jar
-Working directory: C:\Users\perhaps\Desktop\Mythic Progressions\build\_atJar_4
+ - C:\Users\mason\.gradle\caches\forge_gradle\maven_downloader\net\minecraftforge\accesstransformers\8.0.7\accesstransformers-8.0.7-fatjar.jar
+Working directory: C:\Users\mason\Desktop\Mythic-Progressions\build\_atJar_4
 Main class: net.minecraftforge.accesstransformer.TransformerProcessor
 ====================================
