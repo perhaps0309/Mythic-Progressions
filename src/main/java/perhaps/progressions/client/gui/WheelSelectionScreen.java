@@ -20,34 +20,49 @@ public class WheelSelectionScreen extends Screen {
     private int wheelRadius;
     private double angleStep;
 
-    private class WheelOption {
-        ResourceLocation icon;
-        String title;
-        String description;
+    private static class WheelOption {
+        public final ResourceLocation icon;
+        public final String title;
+        public final String description;
+        public final Runnable action;
 
-        WheelOption(ResourceLocation icon, String title, String description) {
+        public WheelOption(ResourceLocation icon, String title, String description, Runnable action) {
             this.icon = icon;
             this.title = title;
             this.description = description;
+            this.action = action;
         }
     }
 
     private List<WheelOption> options;
-    private float rotation = 0;
 
     private static final ResourceLocation PERKS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/perks.jpg");
     private static final ResourceLocation ABILITIES_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/abilities.png");
     private static final ResourceLocation SKILLS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/skills.png");
     private static final ResourceLocation STATS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/stats.png");
+
     public WheelSelectionScreen() {
         super(new TextComponent("Wheel Selection"));
         options = new ArrayList<>();
-        options.add(new WheelOption(PERKS_ICON, "Perks", "Select a perk to unlock"));
-        options.add(new WheelOption(ABILITIES_ICON, "Abilities", "Gain an advantage"));
-        options.add(new WheelOption(SKILLS_ICON, "Skills", "Upgrade your skills"));
-        options.add(new WheelOption(STATS_ICON, "Stats", "View your stats"));
+        options.add(new WheelOption(PERKS_ICON, "Perks", "Select a perk to unlock", () -> {
+            // Add code to execute when the Perks option is selected
+        }));
+
+        options.add(new WheelOption(ABILITIES_ICON, "Abilities", "Gain an advantage", () -> {
+            // Add code to execute when the Abilities option is selected
+        }));
+
+        options.add(new WheelOption(SKILLS_ICON, "Skills", "Upgrade your skills", () -> {
+            // Add code to execute when the Skills option is selected
+        }));
+
+        options.add(new WheelOption(STATS_ICON, "Stats", "View your stats", () -> {
+            // Add code to execute when the Stats option is selected
+        }));
+
         wheelRadius = 90;
     }
+
 
     @Override
     public boolean isPauseScreen() {
@@ -64,11 +79,16 @@ public class WheelSelectionScreen extends Screen {
 
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
-        rotation += 0.002f; // Adjust the speed of the rotation here
-        int selectedIndex = getHoveredOptionIndex(mouseX, mouseY, (float) (rotation * 180 / Math.PI));
+        int selectedIndex = getHoveredOptionIndex(mouseX, mouseY);
+
+        // Draw the darker grey background circle using drawCircle
+        for (int i = 0; i < options.size(); i++) {
+            drawCircle(poseStack, centerX, centerY, wheelRadius + 18, wheelRadius - 18, 0x444444, -1, i);
+        }
+
 
         for (int i = 0; i < options.size(); i++) {
-            drawCircle(poseStack, centerX, centerY, wheelRadius + 15, wheelRadius - 15, 0x888888, selectedIndex, i);
+            drawCircle(poseStack, centerX, centerY, wheelRadius + 15, wheelRadius - 15, 0x88888888, selectedIndex, i);
         }
 
         for (int i = 0; i < options.size(); i++) {
@@ -78,169 +98,110 @@ public class WheelSelectionScreen extends Screen {
         if (selectedIndex >= 0) {
             WheelOption selectedOption = options.get(selectedIndex);
             drawScaledText(poseStack, selectedOption.title, centerX, centerY - 10, 0xFFFFFF, 1.15F, true);
-            drawScaledText(poseStack, selectedOption.description, centerX, centerY + 5, 0xFFFFFF, 0.95F, true); // Change the scale here for the description
+            drawScaledText(poseStack, selectedOption.description, centerX, centerY + 5, 0xFFFFFF, 0.95F, true);
         }
 
         super.render(poseStack, mouseX, mouseY, partialTicks);
     }
 
     private void drawOption(PoseStack poseStack, WheelOption option, int index, boolean isSelected) {
-        double angle = Math.toRadians((index * angleStep) - 90 + 45) + rotation;
+        double angle = angleStep * index;
+        int x = centerX + (int) (Math.cos(Math.toRadians(angle)) * wheelRadius);
+        int y = centerY + (int) (Math.sin(Math.toRadians(angle)) * wheelRadius);
 
-        int x = centerX + (int) (wheelRadius * Math.cos(angle));
-        int y = centerY + (int) (wheelRadius * Math.sin(angle));
-
-        // Adjust the position of the icon based on the current rotation
-        drawIcon(poseStack, option.icon, x, y, 1.0f);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderTexture(0, option.icon);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        blit(poseStack, x - 8, y - 8, 0, 0, 16, 16, 16, 16);
     }
 
-    private void drawIcon(PoseStack poseStack, ResourceLocation texture, int x, int y, float scale) {
-        poseStack.pushPose();
-        poseStack.scale(scale, scale, 1.0f);
-        int size = 16;
-        int newX = (int) (x - size * scale / 2);
-        int newY = (int) (y - size * scale / 2);
+    private int getHoveredOptionIndex(int mouseX, int mouseY) {
+        int selectedIndex = -1;
+        double minDistance = Double.MAX_VALUE;
 
-        RenderSystem.setShaderTexture(0, texture);
-        blit(poseStack, newX, newY, 0, 0, size, size, size, size);
-        poseStack.popPose();
+        for (int i = 0; i < options.size(); i++) {
+            double angle = angleStep * i;
+            int x = centerX + (int) (Math.cos(Math.toRadians(angle)) * wheelRadius);
+            int y = centerY + (int) (Math.sin(Math.toRadians(angle)) * wheelRadius);
+            double distance = Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2));
+
+            if (distance <= 20 && distance < minDistance) {
+                minDistance = distance;
+                selectedIndex = i;
+            }
+        }
+
+        return selectedIndex;
     }
 
     private void drawScaledText(PoseStack poseStack, String text, int x, int y, int color, float scale, boolean center) {
+        int length = font.width(text);
+        if (center) {
+            x -= (int) (length * scale / 2);
+        }
+
         poseStack.pushPose();
-        poseStack.scale(scale, scale, 1.0f);
-        int newX = center ? (int) (x - font.width(text) * scale / 2) : x;
-        int newY = center ? (int) (y - 4 * scale) : y;
-        font.draw(poseStack, text, newX / scale, newY / scale, color);
+        poseStack.scale(scale, scale, 1.0F);
+        font.draw(poseStack, text, x / scale, y / scale, color);
         poseStack.popPose();
     }
 
-    private double calculateAngle(int x1, int y1, int x2, int y2) {
-        double deltaX = x2 - x1;
-        double deltaY = y2 - y1;
-        return Math.atan2(deltaY, deltaX);
-    }
+    private void drawCircle(PoseStack poseStack, int centerX, int centerY, int outerRadius, int innerRadius, int color, int selectedIndex, int index) {
+        float angle = (float) (angleStep * index);
+        float startAngle = angle - (float) (angleStep / 2);
+        float endAngle = angle + (float) (angleStep / 2);
 
-    private int getHoveredOptionIndex(int mouseX, int mouseY, float rotation) {
-        int distanceX = mouseX - centerX;
-        int distanceY = mouseY - centerY;
-        double distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+        if (selectedIndex == index) {
+            color = 0xFFFFFF;
+            startAngle -= 1; // How much it goes along the circle
+            endAngle += 1;
 
-        // Check if the mouse position is within the circle
-        if (distance <= wheelRadius + 15 && distance >= wheelRadius - 15) {
-            double mouseAngle = Math.toDegrees(calculateAngle(centerX, centerY, mouseX, mouseY));
-            if (mouseAngle < 0) {
-                mouseAngle += 360;
-            }
-
-            // Reset rotation angle to avoid it getting too big
-            float rotationInDegrees = (float) (rotation * 180 / Math.PI) % 360;
-
-            mouseAngle = (mouseAngle - rotation * 180 / Math.PI + angleStep / 2) % 360;
-            if (mouseAngle < 0) {
-                mouseAngle += 360;
-            }
-
-            for (int i = 0; i < options.size(); i++) {
-                double startAngle = (i * angleStep) % 360;
-                double endAngle = ((i + 1) * angleStep) % 360;
-
-                if (startAngle < endAngle && mouseAngle >= startAngle && mouseAngle <= endAngle) {
-                    return i;
-                } else if (startAngle > endAngle && (mouseAngle >= startAngle || mouseAngle <= endAngle)) {
-                    return i;
-                }
-            }
+            innerRadius += 2; // How much it goes inwards
+            outerRadius += 2; // How much it goes outwards
         }
 
-        return -1;
+        drawArc(poseStack, centerX, centerY, outerRadius, innerRadius, startAngle, endAngle, color, selectedIndex == index);
     }
 
-    private void drawCircle(PoseStack poseStack, int centerX, int centerY, int outerRadius, int innerRadius, int color, int selectedIndex, int currentIndex) {
-        int numSegments = 360;
-        float angleStep = 360.0f / numSegments;
-
-        RenderSystem.disableTexture();
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-
-        poseStack.pushPose();
+    private void drawArc(PoseStack poseStack, int centerX, int centerY, int outerRadius, int innerRadius, float startAngle, float endAngle, int color, boolean isSelected) {
+        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
         Matrix4f matrix = poseStack.last().pose();
 
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        float startRadians = (float) Math.toRadians(startAngle);
+        float endRadians = (float) Math.toRadians(endAngle);
+        float step = (endRadians - startRadians) / 64;
 
-        BufferBuilder buffer = Tesselator.getInstance().getBuilder();
-        buffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
+        float red = (color >> 16 & 255) / 255.0F;
+        float green = (color >> 8 & 255) / 255.0F;
+        float blue = (color & 255) / 255.0F;
 
-        int optionsSize = options.size();
-        for (int i = 0; i <= numSegments; i++) {
-            if (currentIndex != (i * optionsSize / numSegments)) {
-                continue;
+        bufferBuilder.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
+
+        for (float angle = startRadians; angle <= endRadians + step; angle += step) {
+            if (color != 0x444444) {
+                if (angle < startRadians + Math.toRadians(1) || angle > endRadians - Math.toRadians(1)) {
+                    continue;
+                }
             }
 
-            double angle = Math.toRadians(angleStep * i) + rotation;
-            float outerX = centerX + (float) (outerRadius * Math.cos(angle));
-            float outerY = centerY + (float) (outerRadius * Math.sin(angle));
-            float innerX = centerX + (float) (innerRadius * Math.cos(angle));
-            float innerY = centerY + (float) (innerRadius * Math.sin(angle));
+            float xOuter = centerX + (float) (Math.cos(angle) * outerRadius);
+            float yOuter = centerY + (float) (Math.sin(angle) * outerRadius);
+            float xInner = centerX + (float) (Math.cos(angle) * innerRadius);
+            float yInner = centerY + (float) (Math.sin(angle) * innerRadius);
 
-            int currentColor = selectedIndex == currentIndex ? 0x0000FF : color;
-            buffer.vertex(matrix, outerX, outerY, 0.0F).color((currentColor >> 16) & 255, (currentColor >> 8) & 255, currentColor & 255, 255).endVertex();
-            buffer.vertex(matrix, innerX, innerY, 0.0F).color((currentColor >> 16) & 255, (currentColor >> 8) & 255, currentColor & 255, 255).endVertex();
+            bufferBuilder.vertex(matrix, xOuter, yOuter, 0).color(red, green, blue, isSelected ? 1.0F : 0.5F).endVertex();
+            bufferBuilder.vertex(matrix, xInner, yInner, 0).color(red, green, blue, isSelected ? 1.0F : 0.5F).endVertex();
         }
 
-        buffer.end();
-        BufferUploader.end(buffer);
-
-        // Draw outline
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        BufferBuilder outlineBuffer = Tesselator.getInstance().getBuilder();
-        outlineBuffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.disableTexture();
 
-        float outlineWidth = 0.35f; // You can adjust the outline width here
-        for (int i = 0; i <= numSegments; i++) {
-            if (currentIndex != (i * optionsSize / numSegments)) {
-                continue;
-            }
+        bufferBuilder.end();
+        BufferUploader.end(bufferBuilder);
 
-            double angle = Math.toRadians(angleStep * i) + rotation;
-            float outerX = centerX + (float) ((outerRadius + outlineWidth) * Math.cos(angle));
-            float outerY = centerY + (float) ((outerRadius + outlineWidth) * Math.sin(angle));
-            float innerX = centerX + (float) ((outerRadius - outlineWidth) * Math.cos(angle));
-            float innerY = centerY + (float) ((outerRadius - outlineWidth) * Math.sin(angle));
-
-            outlineBuffer.vertex(matrix, outerX, outerY, 0.0F).color(0, 0, 0, 255).endVertex();
-            outlineBuffer.vertex(matrix, innerX, innerY, 0.0F).color(0, 0, 0, 255).endVertex();
-        }
-
-        outlineBuffer.end();
-        BufferUploader.end(outlineBuffer);
-
-        // Draw outline
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        outlineBuffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
-
-        for (int i = 0; i <= numSegments; i++) {
-            if (currentIndex != (i * optionsSize / numSegments)) {
-                continue;
-            }
-
-            double angle = Math.toRadians(angleStep * i) + rotation;
-            float outerX = centerX + (float) ((innerRadius + outlineWidth) * Math.cos(angle));
-            float outerY = centerY + (float) ((innerRadius + outlineWidth) * Math.sin(angle));
-            float innerX = centerX + (float) ((innerRadius - outlineWidth) * Math.cos(angle));
-            float innerY = centerY + (float) ((innerRadius - outlineWidth) * Math.sin(angle));
-
-            outlineBuffer.vertex(matrix, outerX, outerY, 0.0F).color(0, 0, 0, 255).endVertex();
-            outlineBuffer.vertex(matrix, innerX, innerY, 0.0F).color(0, 0, 0, 255).endVertex();
-        }
-
-        outlineBuffer.end();
-        BufferUploader.end(outlineBuffer);
-
-        poseStack.popPose();
-
-        RenderSystem.disableBlend();
         RenderSystem.enableTexture();
+        RenderSystem.disableBlend();
     }
 }
