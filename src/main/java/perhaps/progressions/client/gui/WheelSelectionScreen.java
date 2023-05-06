@@ -2,12 +2,16 @@ package perhaps.progressions.client.gui;
 
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.TextComponent;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import perhaps.progressions.MythicProgressions;
 
 import java.awt.*;
@@ -40,6 +44,8 @@ public class WheelSelectionScreen extends Screen {
     private static final ResourceLocation ABILITIES_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/abilities.png");
     private static final ResourceLocation SKILLS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/skills.png");
     private static final ResourceLocation STATS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/stats.png");
+    private static final SoundEvent HOVER_SOUND = new SoundEvent(new ResourceLocation(MythicProgressions.MOD_ID + ":sounds/hover_sound.ogg"));
+    private int lastHoveredOptionIndex = -1; // Store the last hovered option index
 
     public WheelSelectionScreen() {
         super(new TextComponent("Wheel Selection"));
@@ -101,6 +107,12 @@ public class WheelSelectionScreen extends Screen {
             drawScaledText(poseStack, selectedOption.description, centerX, centerY + 5, 0xFFFFFF, 0.95F, true);
         }
 
+        if (selectedIndex >= 0 && selectedIndex != lastHoveredOptionIndex) {
+            playHoverSound();
+        }
+
+        lastHoveredOptionIndex = selectedIndex;
+
         super.render(poseStack, mouseX, mouseY, partialTicks);
     }
 
@@ -132,6 +144,12 @@ public class WheelSelectionScreen extends Screen {
         }
 
         return selectedIndex;
+    }
+
+    private void playHoverSound() {
+        // Play a sound here using Minecraft's SoundEngine
+        // For example, to play the "UI.button.hover" sound:
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(HOVER_SOUND, 1.0F));
     }
 
     private void drawScaledText(PoseStack poseStack, String text, int x, int y, int color, float scale, boolean center) {
