@@ -92,7 +92,6 @@ public class WheelSelectionScreen extends Screen {
             drawCircle(poseStack, centerX, centerY, wheelRadius + 18, wheelRadius - 18, 0x444444, -1, i);
         }
 
-
         for (int i = 0; i < options.size(); i++) {
             drawCircle(poseStack, centerX, centerY, wheelRadius + 15, wheelRadius - 15, 0x88888888, selectedIndex, i);
         }
@@ -135,10 +134,10 @@ public class WheelSelectionScreen extends Screen {
             double angle = angleStep * i;
             int x = centerX + (int) (Math.cos(Math.toRadians(angle)) * wheelRadius);
             int y = centerY + (int) (Math.sin(Math.toRadians(angle)) * wheelRadius);
-            double distance = Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2));
+            double distanceFromCenter = Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2));
 
-            if (distance <= 20 && distance < minDistance) {
-                minDistance = distance;
+            if (distanceFromCenter <= (wheelRadius - 15) && distanceFromCenter < minDistance) {
+                minDistance = distanceFromCenter;
                 selectedIndex = i;
             }
         }
@@ -170,6 +169,7 @@ public class WheelSelectionScreen extends Screen {
         float endAngle = angle + (float) (angleStep / 2);
 
         if (selectedIndex == index) {
+            // Gradually increase the RGB values
             color = 0xFFFFFF;
             startAngle -= 1; // How much it goes along the circle
             endAngle += 1;
