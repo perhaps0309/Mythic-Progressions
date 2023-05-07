@@ -1,0 +1,8 @@
+{
+  "hover_sound": {
+    "subtitle": "sounds.progressions.hover_sound",
+    "sounds": [
+      "progressions:hover_sound"
+    ]
+  }
+}

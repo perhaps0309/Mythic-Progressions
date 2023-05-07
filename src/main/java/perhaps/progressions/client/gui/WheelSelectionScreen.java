@@ -40,16 +40,18 @@ public class WheelSelectionScreen extends Screen {
 
     private List<WheelOption> options;
 
-    private static final ResourceLocation PERKS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/perks.jpg");
+    private static final ResourceLocation PERKS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/perks.png");
     private static final ResourceLocation ABILITIES_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/abilities.png");
     private static final ResourceLocation SKILLS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/skills.png");
     private static final ResourceLocation STATS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/stats.png");
-    private static final SoundEvent HOVER_SOUND = new SoundEvent(new ResourceLocation(MythicProgressions.MOD_ID + ":sounds/hover_sound.ogg"));
+    private static final ResourceLocation SETTINGS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/settings.png");
+    private static final SoundEvent HOVER_SOUND = new SoundEvent(new ResourceLocation(MythicProgressions.MOD_ID, "hover_sound"));
     private int lastHoveredOptionIndex = -1; // Store the last hovered option index
 
     public WheelSelectionScreen() {
         super(new TextComponent("Wheel Selection"));
         options = new ArrayList<>();
+
         options.add(new WheelOption(PERKS_ICON, "Perks", "Select a perk to unlock", () -> {
             // Add code to execute when the Perks option is selected
         }));
@@ -64,6 +66,10 @@ public class WheelSelectionScreen extends Screen {
 
         options.add(new WheelOption(STATS_ICON, "Stats", "View your stats", () -> {
             // Add code to execute when the Stats option is selected
+        }));
+
+        options.add(new WheelOption(SETTINGS_ICON, "Settings", "Change mod settings", () -> {
+            // Add code to execute when the Settings option is selected
         }));
 
         wheelRadius = 90;
@@ -116,7 +122,7 @@ public class WheelSelectionScreen extends Screen {
     }
 
     private void drawOption(PoseStack poseStack, WheelOption option, int index, boolean isSelected) {
-        double angle = angleStep * index;
+        double angle = angleStep * index - 90;
         int x = centerX + (int) (Math.cos(Math.toRadians(angle)) * wheelRadius);
         int y = centerY + (int) (Math.sin(Math.toRadians(angle)) * wheelRadius);
 
@@ -131,7 +137,7 @@ public class WheelSelectionScreen extends Screen {
         double minDistance = Double.MAX_VALUE;
 
         for (int i = 0; i < options.size(); i++) {
-            double angle = angleStep * i;
+            double angle = angleStep * i - 90;
             int x = centerX + (int) (Math.cos(Math.toRadians(angle)) * wheelRadius);
             int y = centerY + (int) (Math.sin(Math.toRadians(angle)) * wheelRadius);
             double distanceFromCenter = Math.sqrt(Math.pow(mouseX - x, 2) + Math.pow(mouseY - y, 2));
@@ -148,7 +154,7 @@ public class WheelSelectionScreen extends Screen {
     private void playHoverSound() {
         // Play a sound here using Minecraft's SoundEngine
         // For example, to play the "UI.button.hover" sound:
-        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(HOVER_SOUND, 1.0F));
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(HOVER_SOUND, 1.5F));
     }
 
     private void drawScaledText(PoseStack poseStack, String text, int x, int y, int color, float scale, boolean center) {
@@ -164,7 +170,7 @@ public class WheelSelectionScreen extends Screen {
     }
 
     private void drawCircle(PoseStack poseStack, int centerX, int centerY, int outerRadius, int innerRadius, int color, int selectedIndex, int index) {
-        float angle = (float) (angleStep * index);
+        float angle = (float) (angleStep * index) - 90;
         float startAngle = angle - (float) (angleStep / 2);
         float endAngle = angle + (float) (angleStep / 2);
 
@@ -175,7 +181,7 @@ public class WheelSelectionScreen extends Screen {
             endAngle += 1;
 
             innerRadius += 2; // How much it goes inwards
-            outerRadius += 2; // How much it goes outwards
+            outerRadius += 3; // How much it goes outwards
         }
 
         drawArc(poseStack, centerX, centerY, outerRadius, innerRadius, startAngle, endAngle, color, selectedIndex == index);
@@ -207,8 +213,8 @@ public class WheelSelectionScreen extends Screen {
             float xInner = centerX + (float) (Math.cos(angle) * innerRadius);
             float yInner = centerY + (float) (Math.sin(angle) * innerRadius);
 
-            bufferBuilder.vertex(matrix, xOuter, yOuter, 0).color(red, green, blue, isSelected ? 1.0F : 0.5F).endVertex();
-            bufferBuilder.vertex(matrix, xInner, yInner, 0).color(red, green, blue, isSelected ? 1.0F : 0.5F).endVertex();
+            bufferBuilder.vertex(matrix, xOuter, yOuter, 0).color(red, green, blue, isSelected ? 1.0F : 0.7F).endVertex();
+            bufferBuilder.vertex(matrix, xInner, yInner, 0).color(red, green, blue, isSelected ? 1.0F : 0.7F).endVertex();
         }
 
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
