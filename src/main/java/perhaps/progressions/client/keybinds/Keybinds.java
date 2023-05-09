@@ -41,7 +41,6 @@ public class Keybinds {
 
         rootScrollWheel.addOption(new WheelOption(PERKS_ICON, "Perks", "Select a perk to unlock", () -> {
             // Add code to execute when the Perks option is selected
-            System.out.println("clicked");
             WheelSelectionScreenManager.openWheelSelectionScreen(player, perksScrollWheel);
         }));
 

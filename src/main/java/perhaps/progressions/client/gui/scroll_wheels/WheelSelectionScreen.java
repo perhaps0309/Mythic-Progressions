@@ -3,6 +3,7 @@ package perhaps.progressions.client.gui.scroll_wheels;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -23,7 +24,8 @@ public class WheelSelectionScreen extends Screen {
     private int lastHoveredOptionIndex = -1;
     private List<WheelOption> options;
 
-
+    private int currentOptionIndex;
+    private int tickCounter;
     public static final ResourceLocation PERKS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/perks.png");
     public static final ResourceLocation ABILITIES_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/abilities.png");
     public static final ResourceLocation SKILLS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/skills.png");
@@ -62,23 +64,36 @@ public class WheelSelectionScreen extends Screen {
             }));
         }
 
+        this.currentOptionIndex = 0;
+        this.tickCounter = 0;
+
         recalculateAngleStep();
     }
 
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         int selectedIndex = getHoveredOptionIndex(mouseX, mouseY);
+        tickCounter++;
+
+        if (tickCounter >= 13) {
+            tickCounter = 0;
+
+            // Increment the currentOptionIndex
+            if (this.currentOptionIndex < this.currentScrollWheel.getOptions().size() - 1) {
+                this.currentOptionIndex++;
+            }
+        }
 
         // Draw the darker grey background circle using drawCircle
-        for (int i = 0; i < currentScrollWheel.getOptions().size(); i++) {
+        for (int i = 0; i <= this.currentOptionIndex; i++) {
             drawCircle(poseStack, centerX, centerY, wheelRadius + 18, wheelRadius - 18, 0x444444, -1, i);
         }
 
-        for (int i = 0; i < currentScrollWheel.getOptions().size(); i++) {
+        for (int i = 0; i <= this.currentOptionIndex; i++) {
             drawCircle(poseStack, centerX, centerY, wheelRadius + 15, wheelRadius - 15, 0x88888888, selectedIndex, i);
         }
 
-        for (int i = 0; i < currentScrollWheel.getOptions().size(); i++) {
+        for (int i = 0; i <= this.currentOptionIndex; i++) {
             drawOption(poseStack, currentScrollWheel.getOptions().get(i), i, i == selectedIndex);
         }
 
