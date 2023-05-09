@@ -26,6 +26,10 @@ public class WheelSelectionScreen extends Screen {
 
     private int currentOptionIndex;
     private int tickCounter;
+
+    boolean isReverseOrder = false;
+    private int unloadOptionIndex = -1;
+
     public static final ResourceLocation PERKS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/perks.png");
     public static final ResourceLocation ABILITIES_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/abilities.png");
     public static final ResourceLocation SKILLS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/skills.png");
@@ -66,6 +70,8 @@ public class WheelSelectionScreen extends Screen {
 
         this.currentOptionIndex = 0;
         this.tickCounter = 0;
+        this.isReverseOrder = false;
+        this.unloadOptionIndex = -1;
 
         recalculateAngleStep();
     }
@@ -75,25 +81,31 @@ public class WheelSelectionScreen extends Screen {
         int selectedIndex = getHoveredOptionIndex(mouseX, mouseY);
         tickCounter++;
 
-        if (tickCounter >= 13) {
+        if (tickCounter >= 63) {
             tickCounter = 0;
 
             // Increment the currentOptionIndex
             if (this.currentOptionIndex < this.currentScrollWheel.getOptions().size() - 1) {
                 this.currentOptionIndex++;
             }
+
+            if (unloadOptionIndex >= 0) {
+                unloadOptionIndex--;
+            }
         }
 
         // Draw the darker grey background circle using drawCircle
-        for (int i = 0; i <= this.currentOptionIndex; i++) {
+
+        int totalSize = isReverseOrder ? unloadOptionIndex : this.currentOptionIndex;
+        for (int i = 0; i <= totalSize; i++) {
             drawCircle(poseStack, centerX, centerY, wheelRadius + 18, wheelRadius - 18, 0x444444, -1, i);
         }
 
-        for (int i = 0; i <= this.currentOptionIndex; i++) {
+        for (int i = 0; i <= totalSize; i++) {
             drawCircle(poseStack, centerX, centerY, wheelRadius + 15, wheelRadius - 15, 0x88888888, selectedIndex, i);
         }
 
-        for (int i = 0; i <= this.currentOptionIndex; i++) {
+        for (int i = 0; i <= totalSize; i++) {
             drawOption(poseStack, currentScrollWheel.getOptions().get(i), i, i == selectedIndex);
         }
 
@@ -105,6 +117,12 @@ public class WheelSelectionScreen extends Screen {
 
         if (selectedIndex >= 0 && selectedIndex != lastHoveredOptionIndex) {
             playHoverSound();
+        }
+
+        if(isReverseOrder && unloadOptionIndex >= -2) {
+            WheelOption hoveredOption = currentScrollWheel.getOptions().get(selectedIndex);
+            hoveredOption.action.run();  // Run the action associated with the hovered option
+            playClickSound();
         }
 
         lastHoveredOptionIndex = selectedIndex;
@@ -229,9 +247,9 @@ public class WheelSelectionScreen extends Screen {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         int hoveredOptionIndex = getHoveredOptionIndex((int) mouseX, (int) mouseY);
         if (button == 0 && hoveredOptionIndex != -1) {  // 0 is the left mouse button
-            WheelOption hoveredOption = currentScrollWheel.getOptions().get(hoveredOptionIndex);
-            hoveredOption.action.run();  // Run the action associated with the hovered option
-            playClickSound();
+            // Toggle the order
+            isReverseOrder = true;
+            unloadOptionIndex = currentScrollWheel.getOptions().size() - 1;
 
             return true;
         }
