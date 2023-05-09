@@ -30,11 +30,26 @@ public class WheelSelectionScreen extends Screen {
     boolean isReverseOrder = false;
     private int unloadOptionIndex = -1;
 
+    public static int darkOutline = Integer.parseInt("333332", 16);
+    public static int lightOutline = Integer.parseInt("FFFFFF", 16);
+
+    public static int darkBase = Integer.parseInt("1B1A1D", 16);
+    public static int lightBase = Integer.parseInt("A2A2A2", 16);
+
+    public static int outlineColor = darkOutline;
+    public static int baseColor = darkBase;
+    public static boolean darkMode = true;
+
     public static final ResourceLocation PERKS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/perks.png");
     public static final ResourceLocation ABILITIES_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/abilities.png");
     public static final ResourceLocation SKILLS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/skills.png");
     public static final ResourceLocation STATS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/stats.png");
     public static final ResourceLocation SETTINGS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/settings.png");
+    public static final ResourceLocation MODE_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/mode.png");
+    public static final ResourceLocation BACK_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/back.png");
+
+    public static final ResourceLocation PRESTIGE_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/prestige.png");
+    public static final ResourceLocation UPGRADE_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/upgrade.png");
     public static final SoundEvent HOVER_SOUND = new SoundEvent(new ResourceLocation(MythicProgressions.MOD_ID, "hover_sound"));
     public static final SoundEvent CLICK_SOUND = new SoundEvent(new ResourceLocation(MythicProgressions.MOD_ID, "click_sound"));
 
@@ -62,7 +77,7 @@ public class WheelSelectionScreen extends Screen {
 
         if (currentScrollWheel.getParent() != null) {
             currentScrollWheel.getOptions().removeIf(option -> option.title.equals("Go Back"));
-            currentScrollWheel.addOption(new WheelOption(SETTINGS_ICON, "Go Back", "Go back to previous wheel", () -> {
+            currentScrollWheel.addOption(new WheelOption(BACK_ICON, "Go Back", "Go back to previous wheel", () -> {
                 currentScrollWheel = currentScrollWheel.getParent();
                 init();
             }));
@@ -79,33 +94,15 @@ public class WheelSelectionScreen extends Screen {
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         int selectedIndex = getHoveredOptionIndex(mouseX, mouseY);
-        tickCounter++;
-
-        if (tickCounter >= 63) {
-            tickCounter = 0;
-
-            // Increment the currentOptionIndex
-            if (this.currentOptionIndex < this.currentScrollWheel.getOptions().size() - 1) {
-                this.currentOptionIndex++;
-            }
-
-            if (unloadOptionIndex >= 0) {
-                unloadOptionIndex--;
-            }
-        }
+        int totalSize = this.currentScrollWheel.getOptions().size() - 1;
 
         // Draw the darker grey background circle using drawCircle
-
-        int totalSize = isReverseOrder ? unloadOptionIndex : this.currentOptionIndex;
         for (int i = 0; i <= totalSize; i++) {
-            drawCircle(poseStack, centerX, centerY, wheelRadius + 18, wheelRadius - 18, 0x444444, -1, i);
+            drawCircle(poseStack, centerX, centerY, wheelRadius + 17, wheelRadius - 17, outlineColor, -1, i);
         }
 
         for (int i = 0; i <= totalSize; i++) {
-            drawCircle(poseStack, centerX, centerY, wheelRadius + 15, wheelRadius - 15, 0x88888888, selectedIndex, i);
-        }
-
-        for (int i = 0; i <= totalSize; i++) {
+            drawCircle(poseStack, centerX, centerY, wheelRadius + 15, wheelRadius - 15, baseColor, selectedIndex, i);
             drawOption(poseStack, currentScrollWheel.getOptions().get(i), i, i == selectedIndex);
         }
 
@@ -113,16 +110,14 @@ public class WheelSelectionScreen extends Screen {
             WheelOption selectedOption = currentScrollWheel.getOptions().get(selectedIndex);
             drawScaledText(poseStack, selectedOption.title, centerX, centerY - 10, 0xFFFFFF, 1.15F, true);
             drawScaledText(poseStack, selectedOption.description, centerX, centerY + 5, 0xFFFFFF, 0.95F, true);
+
+            if(selectedOption.onHover != null) {
+                selectedOption.onHover.run();
+            }
         }
 
         if (selectedIndex >= 0 && selectedIndex != lastHoveredOptionIndex) {
             playHoverSound();
-        }
-
-        if(isReverseOrder && unloadOptionIndex >= -2) {
-            WheelOption hoveredOption = currentScrollWheel.getOptions().get(selectedIndex);
-            hoveredOption.action.run();  // Run the action associated with the hovered option
-            playClickSound();
         }
 
         lastHoveredOptionIndex = selectedIndex;
@@ -132,13 +127,15 @@ public class WheelSelectionScreen extends Screen {
 
     private void drawOption(PoseStack poseStack, WheelOption option, int index, boolean isSelected) {
         double angle = angleStep * index - 90;
-        int x = centerX + (int) (Math.cos(Math.toRadians(angle)) * wheelRadius);
-        int y = centerY + (int) (Math.sin(Math.toRadians(angle)) * wheelRadius);
+        int adjustedRadius = isSelected ? wheelRadius + 3 : wheelRadius;
+        int x = centerX + (int) (Math.cos(Math.toRadians(angle)) * adjustedRadius);
+        int y = centerY + (int) (Math.sin(Math.toRadians(angle)) * adjustedRadius);
+        int iconSize = isSelected ? 20 : 16;  // Increase icon size when selected
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, option.icon);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        blit(poseStack, x - 8, y - 8, 0, 0, 16, 16, 16, 16);
+        blit(poseStack, x - iconSize / 2, y - iconSize / 2, 0, 0, iconSize, iconSize, iconSize, iconSize);
     }
 
     private int getHoveredOptionIndex(int mouseX, int mouseY) {
@@ -161,27 +158,33 @@ public class WheelSelectionScreen extends Screen {
     }
 
     private void playHoverSound() {
-        // Play a sound here using Minecraft's SoundEngine
-        // For example, to play the "UI.button.hover" sound:
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(HOVER_SOUND, 1.5F));
     }
 
     private void playClickSound() {
-        // Play a sound here using Minecraft's SoundEngine
-        // For example, to play the "UI.button.click" sound:
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(HOVER_SOUND, 1.0F));
     }
 
     private void drawScaledText(PoseStack poseStack, String text, int x, int y, int color, float scale, boolean center) {
-        int length = font.width(text);
-        if (center) {
-            x -= (int) (length * scale / 2);
-        }
+        String[] lines = text.split("\n");
 
-        poseStack.pushPose();
-        poseStack.scale(scale, scale, 1.0F);
-        font.draw(poseStack, text, x / scale, y / scale, color);
-        poseStack.popPose();
+        for (String line : lines) {
+            int length = font.width(line);
+
+            int currentX = x;
+            int currentY = y;
+            if (center) {
+                currentX -= (int) (length * scale / 2);
+                currentY -= (int) (10 * scale / 2);
+            }
+
+            poseStack.pushPose();
+            poseStack.scale(scale, scale, 1.0F);
+            font.draw(poseStack, line, currentX / scale, currentY / scale, color);
+            poseStack.popPose();
+
+            y += 10; // Adjust this value to modify the space between lines
+        }
     }
 
     private void drawCircle(PoseStack poseStack, int centerX, int centerY, int outerRadius, int innerRadius, int color, int selectedIndex, int index) {
@@ -190,11 +193,10 @@ public class WheelSelectionScreen extends Screen {
         float endAngle = angle + (float) (angleStep / 2);
 
         if (selectedIndex == index) {
-            color = 0xFFFFFF;
             startAngle -= 1; // How much it goes along the circle
             endAngle += 1;
 
-            innerRadius += 2; // How much it goes inwards
+            innerRadius += 3; // How much it goes inwards
             outerRadius += 3; // How much it goes outwards
         }
 
@@ -216,7 +218,7 @@ public class WheelSelectionScreen extends Screen {
         bufferBuilder.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
 
         for (float angle = startRadians; angle <= endRadians + step; angle += step) {
-            if (color != 0x444444) {
+            if (color != outlineColor) {
                 if (angle < startRadians + Math.toRadians(1) || angle > endRadians - Math.toRadians(1)) {
                     continue;
                 }
@@ -227,8 +229,8 @@ public class WheelSelectionScreen extends Screen {
             float xInner = centerX + (float) (Math.cos(angle) * innerRadius);
             float yInner = centerY + (float) (Math.sin(angle) * innerRadius);
 
-            bufferBuilder.vertex(matrix, xOuter, yOuter, 0).color(red, green, blue, isSelected ? 1.0F : 0.7F).endVertex();
-            bufferBuilder.vertex(matrix, xInner, yInner, 0).color(red, green, blue, isSelected ? 1.0F : 0.7F).endVertex();
+            bufferBuilder.vertex(matrix, xOuter, yOuter, 0).color(red, green, blue, 0.8F).endVertex();
+            bufferBuilder.vertex(matrix, xInner, yInner, 0).color(red, green, blue, 0.8F).endVertex();
         }
 
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
@@ -247,9 +249,9 @@ public class WheelSelectionScreen extends Screen {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         int hoveredOptionIndex = getHoveredOptionIndex((int) mouseX, (int) mouseY);
         if (button == 0 && hoveredOptionIndex != -1) {  // 0 is the left mouse button
-            // Toggle the order
-            isReverseOrder = true;
-            unloadOptionIndex = currentScrollWheel.getOptions().size() - 1;
+            WheelOption hoveredOption = currentScrollWheel.getOptions().get(hoveredOptionIndex);
+            hoveredOption.action.run();  // Run the action associated with the hovered option
+            playClickSound();
 
             return true;
         }
