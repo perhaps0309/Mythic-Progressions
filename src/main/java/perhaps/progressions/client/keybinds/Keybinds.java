@@ -12,6 +12,11 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.glfw.GLFW;
 import perhaps.progressions.MythicProgressions;
 import perhaps.progressions.client.gui.WheelSelectionScreenManager;
+import perhaps.progressions.client.gui.scroll_wheels.ScrollWheel;
+import perhaps.progressions.client.gui.scroll_wheels.WheelOption;
+import perhaps.progressions.client.gui.scroll_wheels.WheelSelectionScreen;
+
+import static perhaps.progressions.client.gui.scroll_wheels.WheelSelectionScreen.*;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = MythicProgressions.MOD_ID, value = Dist.CLIENT)
@@ -30,6 +35,64 @@ public class Keybinds {
         Player player = Minecraft.getInstance().player;
 
         if (player == null) return;
-        WheelSelectionScreenManager.openWheelSelectionScreen(player);
+        // In your mod's initialization code...
+        ScrollWheel rootScrollWheel = new ScrollWheel(null);
+        ScrollWheel perksScrollWheel = new ScrollWheel(rootScrollWheel);
+
+        rootScrollWheel.addOption(new WheelOption(PERKS_ICON, "Perks", "Select a perk to unlock", () -> {
+            // Add code to execute when the Perks option is selected
+            System.out.println("clicked");
+            WheelSelectionScreenManager.openWheelSelectionScreen(player, perksScrollWheel);
+        }));
+
+        rootScrollWheel.addOption(new WheelOption(ABILITIES_ICON, "Abilities", "Gain an advantage", () -> {
+            // Add code to execute when the Abilities option is selected
+        }));
+
+        rootScrollWheel.addOption(new WheelOption(SKILLS_ICON, "Skills", "Upgrade your skills", () -> {
+            // Add code to execute when the Skills option is selected
+        }));
+
+        rootScrollWheel.addOption(new WheelOption(STATS_ICON, "Stats", "View your stats", () -> {
+            // Add code to execute when the Stats option is selected
+        }));
+
+        rootScrollWheel.addOption(new WheelOption(SETTINGS_ICON, "Settings", "Modify the mod's settings.", () -> {
+
+        }));
+
+        perksScrollWheel.addOption(new WheelOption(PERKS_ICON, "Perk 1", "Perk 1 description", () -> {
+            // Add code to execute when Perk 1 is selected
+        }));
+
+        perksScrollWheel.addOption(new WheelOption(PERKS_ICON, "Perk 2", "Perk 2 description", () -> {
+            // Add code to execute when Perk 2 is selected
+        }));
+
+        perksScrollWheel.addOption(new WheelOption(PERKS_ICON, "Perk 3", "Perk 3 description", () -> {
+            // Add code to execute when Perk 3 is selected
+        }));
+
+        perksScrollWheel.addOption(new WheelOption(PERKS_ICON, "Perk 4", "Perk 4 description", () -> {
+            // Add code to execute when Perk 4 is selected
+        }));
+
+        perksScrollWheel.addOption(new WheelOption(PERKS_ICON, "Perk 5", "Perk 5 description", () -> {
+            // Add code to execute when Perk 5 is selected
+        }));
+
+        perksScrollWheel.addOption(new WheelOption(PERKS_ICON, "Perk 6", "Perk 6 description", () -> {
+            // Add code to execute when Perk 6 is selected
+        }));
+
+        perksScrollWheel.addOption(new WheelOption(PERKS_ICON, "Perk 7", "Perk 7 description", () -> {
+            // Add code to execute when Perk 7 is selected
+        }));
+
+        perksScrollWheel.addOption(new WheelOption(PERKS_ICON, "Perk 8", "Perk 8 description", () -> {
+            // Add code to execute when Perk 8 is selected
+        }));
+
+        WheelSelectionScreenManager.openWheelSelectionScreen(player, rootScrollWheel);
     }
 }
