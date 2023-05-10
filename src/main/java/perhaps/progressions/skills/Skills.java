@@ -10,7 +10,7 @@ import static perhaps.progressions.client.gui.WheelSelectionManager.*;
 import static perhaps.progressions.client.gui.scroll_wheels.WheelSelectionScreen.*;
 public class Skills {
     public void initializeSkills() {
-        skills.forEach((skillId, skillObject) -> {
+        skills.forEach((skillName, skillObject) -> {
            String displayName = (String) skillObject.get("displayName");
            String description = (String) skillObject.get("description");
            String saveName = (String) skillObject.get("saveName");
@@ -152,7 +152,7 @@ public class Skills {
             });
 
             skill1Wheel.addOption(skill1Option);
-            WheelSelectionManager.openWheelSelectionScreen(global_player, skill1Wheel);
+            WheelSelectionManager.openWheelSelectionScreen(globalPlayer, skill1Wheel);
         }));
     }
 }
