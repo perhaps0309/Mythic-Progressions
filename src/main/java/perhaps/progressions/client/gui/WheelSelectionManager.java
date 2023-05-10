@@ -17,11 +17,11 @@ public class WheelSelectionManager {
     public static ScrollWheel skillsScrollWheel = new ScrollWheel(rootScrollWheel);
     public static ScrollWheel abilitiesScrollWheel = new ScrollWheel(rootScrollWheel);
     public static ScrollWheel settingsScrollWheel = new ScrollWheel(rootScrollWheel);
-    public static Player global_player;
+    public static Player globalPlayer;
 
     public static void setupWheel(Player player) {
         isWheelSetup = true;
-        global_player = player;
+        globalPlayer = player;
 
         rootScrollWheel.addOption(new WheelOption(PERKS_ICON, "Perks", "Select a perk to unlock", () -> {
             WheelSelectionManager.openWheelSelectionScreen(player, perksScrollWheel);
@@ -49,8 +49,8 @@ public class WheelSelectionManager {
     }
 
     public static void reinitializeWheel() {
+        if (globalPlayer == null) return;
         System.out.println("Reinitializing wheel!");
-        if (global_player == null) return;
 
         rootScrollWheel = new ScrollWheel(null);
         perksScrollWheel = new ScrollWheel(rootScrollWheel);
@@ -58,7 +58,7 @@ public class WheelSelectionManager {
         abilitiesScrollWheel = new ScrollWheel(rootScrollWheel);
         settingsScrollWheel = new ScrollWheel(rootScrollWheel);
 
-        setupWheel(global_player);
+        setupWheel(globalPlayer);
     }
 
     public static void openWheelSelectionScreen(Player player, ScrollWheel rootScrollWheel) {
