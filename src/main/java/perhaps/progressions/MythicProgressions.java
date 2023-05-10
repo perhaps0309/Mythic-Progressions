@@ -8,12 +8,15 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
+import perhaps.progressions.abilities.Abilities;
+import perhaps.progressions.client.gui.WheelSelectionManager;
 import perhaps.progressions.client.keybinds.Keybinds;
+import perhaps.progressions.skills.Skills;
 
 @Mod(MythicProgressions.MOD_ID)
 public class MythicProgressions {
     public static final String MOD_ID = "progressions";
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public MythicProgressions() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -28,6 +31,7 @@ public class MythicProgressions {
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
+        System.out.println("HIIIII");
         Keybinds.init();
     }
 }
