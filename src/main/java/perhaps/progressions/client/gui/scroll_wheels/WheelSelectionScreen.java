@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import perhaps.progressions.MythicProgressions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WheelSelectionScreen extends Screen {
@@ -108,8 +109,10 @@ public class WheelSelectionScreen extends Screen {
 
         if (selectedIndex >= 0) {
             WheelOption selectedOption = currentScrollWheel.getOptions().get(selectedIndex);
-            drawScaledText(poseStack, selectedOption.title, centerX, centerY - 10, 0xFFFFFF, 1.15F, true);
-            drawScaledText(poseStack, selectedOption.description, centerX, centerY + 5, 0xFFFFFF, 0.95F, true);
+
+            int moveHeight = drawScaledText(poseStack, selectedOption.description, centerX, centerY + 5, 0xFFFFFF, 0.95F, true);
+            drawScaledText(poseStack, selectedOption.title, centerX, centerY - moveHeight, 0xFFFFFF, 1.15F, true);
+
 
             if(selectedOption.onHover != null) {
                 selectedOption.onHover.run();
@@ -165,8 +168,17 @@ public class WheelSelectionScreen extends Screen {
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(HOVER_SOUND, 1.0F));
     }
 
-    private void drawScaledText(PoseStack poseStack, String text, int x, int y, int color, float scale, boolean center) {
-        String[] lines = text.split("\n");
+    private int drawScaledText(PoseStack poseStack, String text, int x, int y, int color, float scale, boolean center) {
+        List<String> lines = wordWrap(text, 130);  // Adjust this value to suit your needs
+
+        // Calculate the total height of the text
+        int totalHeight = lines.size() * 10;  // 10 is the height of a line in pixels
+
+        // Calculate the move-up height
+        int moveUpHeight = Math.min(totalHeight / 2, 70);
+
+        // Move everything up by the move-up height
+        y -= moveUpHeight;
 
         for (String line : lines) {
             int length = font.width(line);
@@ -183,9 +195,37 @@ public class WheelSelectionScreen extends Screen {
             font.draw(poseStack, line, currentX / scale, currentY / scale, color);
             poseStack.popPose();
 
-            y += 10; // Adjust this value to modify the space between lines
+            y += 10;  // Adjust this value to modify the space between  lines
         }
+
+        return moveUpHeight;
     }
+
+    private List<String> wordWrap(String text, int maxLineWidth) {
+        List<String> lines = new ArrayList<>();
+        String[] paragraphs = text.split("\n");  // Split the text into paragraphs at each newline character
+
+        for (String paragraph : paragraphs) {
+            if (font.width(paragraph) < maxLineWidth) {
+                lines.add(paragraph);
+            } else {
+                String[] words = paragraph.split(" ");
+                StringBuilder currentLine = new StringBuilder(words[0]);
+                for (int i = 1; i < words.length; i++) {
+                    if (font.width(currentLine + " " + words[i]) >= maxLineWidth) {
+                        lines.add(currentLine.toString());
+                        currentLine = new StringBuilder(words[i]);
+                    } else {
+                        currentLine.append(" ").append(words[i]);
+                    }
+                }
+                lines.add(currentLine.toString());
+            }
+        }
+
+        return lines;
+    }
+
 
     private void drawCircle(PoseStack poseStack, int centerX, int centerY, int outerRadius, int innerRadius, int color, int selectedIndex, int index) {
         float angle = (float) (angleStep * index) - 90;
