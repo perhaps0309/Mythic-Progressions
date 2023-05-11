@@ -8,17 +8,18 @@ import static perhaps.progressions.client.gui.WheelSelectionManager.abilitiesScr
 import static perhaps.progressions.client.gui.scroll_wheels.WheelSelectionScreen.ABILITIES_ICON;
 
 public class Abilities {
-    public static void initializeAbilities() {
-        abilities.forEach((skillId, skillObject) -> {
-            String displayName = (String) skillObject.get("displayName");
-            String description = (String) skillObject.get("description");
-            String saveName = (String) skillObject.get("saveName");
+    public void initializeAbilities() {
+        abilities.forEach((abilityName, abilityObject) -> {
+            String displayName = (String) abilityObject.get("displayName");
+            String description = (String) abilityObject.get("description");
+            String saveName = (String) abilityObject.get("saveName");
+            Runnable callback = (Runnable) abilityObject.get("callback");
 
             addAbility(displayName, description, saveName, () -> tempAbilityCallback(displayName));
         });
     }
 
-    private static final Map<String, Map<String, Object>> abilities = Map.ofEntries(
+    private final Map<String, Map<String, Object>> abilities = Map.ofEntries(
 
     );
 

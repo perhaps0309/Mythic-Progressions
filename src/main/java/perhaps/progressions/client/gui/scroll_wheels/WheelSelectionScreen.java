@@ -41,12 +41,12 @@ public class WheelSelectionScreen extends Screen {
     public static int baseColor = darkBase;
     public static boolean darkMode = true;
 
-    public static final ResourceLocation PERKS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/perks.png");
-    public static final ResourceLocation ABILITIES_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/abilities.png");
-    public static final ResourceLocation SKILLS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/skills.png");
+    public static final ResourceLocation PERKS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/perks/perks.png");
+    public static final ResourceLocation ABILITIES_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/abilities/abilities.png");
+    public static final ResourceLocation SKILLS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/skills/skills.png");
     public static final ResourceLocation STATS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/stats.png");
-    public static final ResourceLocation SETTINGS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/settings.png");
-    public static final ResourceLocation MODE_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/mode.png");
+    public static final ResourceLocation SETTINGS_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/settings/settings.png");
+    public static final ResourceLocation MODE_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/settings/mode.png");
     public static final ResourceLocation BACK_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/back.png");
 
     public static final ResourceLocation PRESTIGE_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/prestige.png");

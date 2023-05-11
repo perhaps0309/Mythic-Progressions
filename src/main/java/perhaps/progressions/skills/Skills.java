@@ -138,7 +138,7 @@ public class Skills {
     );
 
     public static void addSkill(String displayName, String description, String saveName, Runnable callback) {
-        ResourceLocation tempIcon = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/" + saveName + ".png");
+        ResourceLocation tempIcon = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/skills/" + saveName + ".png");
         skillsScrollWheel.addOption(new WheelOption(tempIcon, displayName, description, () -> {
             callback.run();
             ScrollWheel skill1Wheel = new ScrollWheel(skillsScrollWheel);

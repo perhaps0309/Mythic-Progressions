@@ -6,6 +6,7 @@ import perhaps.progressions.abilities.Abilities;
 import perhaps.progressions.client.gui.scroll_wheels.WheelOption;
 import perhaps.progressions.client.gui.scroll_wheels.WheelSelectionScreen;
 import perhaps.progressions.client.gui.scroll_wheels.ScrollWheel;
+import perhaps.progressions.perks.Perks;
 import perhaps.progressions.skills.Skills;
 
 import static perhaps.progressions.client.gui.scroll_wheels.WheelSelectionScreen.*;
@@ -43,9 +44,23 @@ public class WheelSelectionManager {
             WheelSelectionManager.openWheelSelectionScreen(player, settingsScrollWheel);
         }));
 
+        settingsScrollWheel.addOption(new WheelOption(MODE_ICON, "Switch Mode", "Changes to light/dark mode", () -> {
+            darkMode = !darkMode;
+            if (darkMode) {
+                outlineColor = darkOutline;
+                baseColor = darkBase;
+            } else {
+                outlineColor = lightOutline;
+                baseColor = lightBase;
+            }
+        }));
+
         Skills skills = new Skills();
+        Abilities abilities = new Abilities();
+        Perks perks = new Perks();
         skills.initializeSkills();
-        Abilities.initializeAbilities();
+        abilities.initializeAbilities();
+        perks.initializePerks();
     }
 
     public static void reinitializeWheel() {
