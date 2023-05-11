@@ -1,5 +1,7 @@
 package perhaps.progressions.skills;
 
+import net.minecraft.resources.ResourceLocation;
+import perhaps.progressions.MythicProgressions;
 import perhaps.progressions.client.gui.WheelSelectionManager;
 import perhaps.progressions.client.gui.scroll_wheels.ScrollWheel;
 import perhaps.progressions.client.gui.scroll_wheels.WheelOption;
@@ -24,7 +26,7 @@ public class Skills {
             Map.entry("arcane_mastery", Map.of(
                     "displayName", "Arcane Mastery",
                     "description", "Improves your proficiency with magic, increasing the damage, range, and accuracy of your spells.",
-                    "saveName", "temp",
+                    "saveName", "arcane_mastery",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
@@ -32,7 +34,7 @@ public class Skills {
             Map.entry("elemental_control", Map.of(
                     "displayName", "Elemental Control",
                     "description", "Increases your ability to harness the raw power of the elements. ",
-                    "saveName", "temp",
+                    "saveName", "elemental_control",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
@@ -40,7 +42,7 @@ public class Skills {
             Map.entry("alchemy", Map.of(
                     "displayName", "Alchemy",
                     "description", "Allows you to brew more powerful potions.",
-                    "saveName", "temp",
+                    "saveName", "alchemy",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
@@ -48,7 +50,7 @@ public class Skills {
             Map.entry("enchanting", Map.of(
                     "displayName", "Enchanting",
                     "description", "Increases your ability to enchant items with more powerful enchantments.",
-                    "saveName", "temp",
+                    "saveName", "enchanting",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
@@ -56,7 +58,7 @@ public class Skills {
             Map.entry("conjuration", Map.of(
                     "displayName", "Conjuration",
                     "description", "Allows you to summon and control creatures from other planes of existence.",
-                    "saveName", "temp",
+                    "saveName", "conjuration",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
@@ -64,7 +66,7 @@ public class Skills {
             Map.entry("meditation", Map.of(
                     "displayName", "Meditation",
                     "description", "Improves your mana regeneration rate.",
-                    "saveName", "temp",
+                    "saveName", "meditation",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
@@ -72,7 +74,7 @@ public class Skills {
             Map.entry("herbalism", Map.of(
                     "displayName", "Herbalism",
                     "description", "Improves the effectiveness of herbs when used in crafting or alchemy.",
-                    "saveName", "temp",
+                    "saveName", "herbalism",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
@@ -80,7 +82,7 @@ public class Skills {
             Map.entry("mining", Map.of(
                     "displayName", "Mining",
                     "description", "Enhances your ability to extract resources from the world.",
-                    "saveName", "temp",
+                    "saveName", "mining",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
@@ -88,7 +90,7 @@ public class Skills {
             Map.entry("smithing", Map.of(
                     "displayName", "Smithing",
                     "description", "Allows you to craft more advanced weapons and armor, increasing their durability and toughness.",
-                    "saveName", "temp",
+                    "saveName", "smithing",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
@@ -96,7 +98,7 @@ public class Skills {
             Map.entry("archery", Map.of(
                     "displayName", "Archery",
                     "description", "Improves your proficiency with bows, increases the damage, range, and accuracy of your arrows.",
-                    "saveName", "temp",
+                    "saveName", "archery",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
@@ -104,7 +106,7 @@ public class Skills {
             Map.entry("swordsmanship", Map.of(
                     "displayName", "Swordsmanship",
                     "description", "Increases your proficiency with swords, dealing more damage from farther.",
-                    "saveName", "temp",
+                    "saveName", "swordsmanship",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
@@ -112,7 +114,7 @@ public class Skills {
             Map.entry("athletics", Map.of(
                     "displayName", "Athletics",
                     "description", "Determines your physical prowess, affecting running speed, jump height, and swimming speed.",
-                    "saveName", "temp",
+                    "saveName", "athletics",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
@@ -120,7 +122,7 @@ public class Skills {
             Map.entry("excavation", Map.of(
                     "displayName", "Excavation",
                     "description", "Enhances your ability to dig and extract resources from the soil and rocks.",
-                    "saveName", "temp",
+                    "saveName", "excavation",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
@@ -128,7 +130,7 @@ public class Skills {
             Map.entry("lumberjack", Map.of(
                     "displayName", "Lumberjack",
                     "description", "Improves your efficiency and speed when chopping down trees.",
-                    "saveName", "temp",
+                    "saveName", "lumberjack",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
@@ -136,7 +138,8 @@ public class Skills {
     );
 
     public static void addSkill(String displayName, String description, String saveName, Runnable callback) {
-        skillsScrollWheel.addOption(new WheelOption(SKILLS_ICON, displayName, description, () -> {
+        ResourceLocation tempIcon = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/" + saveName + ".png");
+        skillsScrollWheel.addOption(new WheelOption(tempIcon, displayName, description, () -> {
             callback.run();
             ScrollWheel skill1Wheel = new ScrollWheel(skillsScrollWheel);
             skill1Wheel.addOption(new WheelOption(PRESTIGE_ICON, "Prestige", "Prestige your skill", () -> {
