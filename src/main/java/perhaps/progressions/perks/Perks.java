@@ -1,11 +1,14 @@
 package perhaps.progressions.perks;
 
+import perhaps.progressions.client.gui.WheelSelectionManager;
+import perhaps.progressions.client.gui.scroll_wheels.ScrollWheel;
 import perhaps.progressions.client.gui.scroll_wheels.WheelOption;
 
 import java.util.Map;
 
-import static perhaps.progressions.client.gui.WheelSelectionManager.perksScrollWheel;
-import static perhaps.progressions.client.gui.scroll_wheels.WheelSelectionScreen.PERKS_ICON;
+import static perhaps.progressions.client.gui.WheelSelectionManager.*;
+import static perhaps.progressions.client.gui.scroll_wheels.WheelSelectionScreen.*;
+import static perhaps.progressions.client.gui.scroll_wheels.WheelSelectionScreen.SKILLS_ICON;
 
 public class Perks {
     public void initializePerks() {
@@ -62,7 +65,7 @@ public class Perks {
             )),
             Map.entry("wizards_sorcery", Map.of(
                     "displayName", "Wizard's Sorcery",
-                    "description", "to-do",
+                    "description", "Increases maximum mana, regeneration speed, and efficiency.",
                     "saveName", "temp",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
@@ -71,6 +74,27 @@ public class Perks {
     );
 
     public static void addPerk(String displayName, String description, String saveName, Runnable callback) {
-        perksScrollWheel.addOption(new WheelOption(PERKS_ICON, displayName, description, callback));
+        perksScrollWheel.addOption(new WheelOption(PERKS_ICON, displayName, description, () -> {
+            callback.run();
+            ScrollWheel perkWheel = new ScrollWheel(perksScrollWheel);
+            perkWheel.addOption(new WheelOption(PRESTIGE_ICON, "Sacrifice", "Sacrifice your perk with 3 netherrite blocks.", () -> {
+
+            }));
+
+            perkWheel.addOption(new WheelOption(UPGRADE_ICON, "Level Up", "Level up your perk", () -> {
+
+            }));
+
+            WheelOption perkOption = new WheelOption(PERKS_ICON, displayName, "Base Level: 1/3\nPerk Level: 1/10\nXP: 78/100", () -> {
+
+            });
+
+            perkOption.addHover(() -> {
+                perkOption.description = "Base Level: 3/3\nPerk Level: 1/10\nXP: 78/100";
+            });
+
+            perkWheel.addOption(perkOption);
+            WheelSelectionManager.openWheelSelectionScreen(globalPlayer, perkWheel);
+        }));
     }
 }

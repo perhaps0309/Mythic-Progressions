@@ -43,22 +43,6 @@ public class Keybinds {
         if (player == null) return;
         if (!isWheelSetup) setupWheel(player);
 
-        abilitiesScrollWheel.addOption(new WheelOption(ABILITIES_ICON, "Ability 1", "Ability 1 description", () -> {
-            // Add code to execute when Ability 1 is selected
-        }));
-
-        abilitiesScrollWheel.addOption(new WheelOption(ABILITIES_ICON, "Ability 2", "Ability 2 description", () -> {
-            // Add code to execute when Ability 2 is selected
-        }));
-
-        abilitiesScrollWheel.addOption(new WheelOption(ABILITIES_ICON, "Ability 3", "Ability 3 description", () -> {
-            // Add code to execute when Ability 3 is selected
-        }));
-
-        abilitiesScrollWheel.addOption(new WheelOption(ABILITIES_ICON, "Ability 4", "Ability 4 description", () -> {
-            // Add code to execute when Ability 4 is selected
-        }));
-
         WheelSelectionManager.openWheelSelectionScreen(player, rootScrollWheel);
     }
 }
