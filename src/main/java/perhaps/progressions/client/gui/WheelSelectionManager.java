@@ -8,6 +8,7 @@ import perhaps.progressions.client.gui.scroll_wheels.WheelSelectionScreen;
 import perhaps.progressions.client.gui.scroll_wheels.ScrollWheel;
 import perhaps.progressions.perks.Perks;
 import perhaps.progressions.skills.Skills;
+import perhaps.progressions.stats.Stats;
 
 import static perhaps.progressions.client.gui.scroll_wheels.WheelSelectionScreen.*;
 
@@ -18,6 +19,8 @@ public class WheelSelectionManager {
     public static ScrollWheel skillsScrollWheel = new ScrollWheel(rootScrollWheel);
     public static ScrollWheel abilitiesScrollWheel = new ScrollWheel(rootScrollWheel);
     public static ScrollWheel settingsScrollWheel = new ScrollWheel(rootScrollWheel);
+
+    public static ScrollWheel statsScrollWheel = new ScrollWheel(rootScrollWheel);
     public static Player globalPlayer;
 
     public static void setupWheel(Player player) {
@@ -36,8 +39,8 @@ public class WheelSelectionManager {
             WheelSelectionManager.openWheelSelectionScreen(player, skillsScrollWheel);
         }));
 
-        rootScrollWheel.addOption(new WheelOption(STATS_ICON, "Stats", "View your stats", () -> {
-            // Add code to execute when the Stats option is selected
+        rootScrollWheel.addOption(new WheelOption(STATS_ICON, "Stats", "View your Stats", () -> {
+            WheelSelectionManager.openWheelSelectionScreen(player, statsScrollWheel);
         }));
 
         rootScrollWheel.addOption(new WheelOption(SETTINGS_ICON, "Settings", "Modify the mod's settings.", () -> {
@@ -58,9 +61,11 @@ public class WheelSelectionManager {
         Skills skills = new Skills();
         Abilities abilities = new Abilities();
         Perks perks = new Perks();
+        Stats stats = new Stats();
         skills.initializeSkills();
         abilities.initializeAbilities();
         perks.initializePerks();
+        stats.initializeStats();
     }
 
     public static void reinitializeWheel() {
@@ -72,6 +77,7 @@ public class WheelSelectionManager {
         skillsScrollWheel = new ScrollWheel(rootScrollWheel);
         abilitiesScrollWheel = new ScrollWheel(rootScrollWheel);
         settingsScrollWheel = new ScrollWheel(rootScrollWheel);
+        statsScrollWheel = new ScrollWheel(rootScrollWheel);
 
         setupWheel(globalPlayer);
     }

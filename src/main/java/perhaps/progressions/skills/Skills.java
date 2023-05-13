@@ -150,7 +150,7 @@ public class Skills {
 
             }));
 
-            WheelOption skill1Option = new WheelOption(SKILLS_ICON, displayName, "Prestige: 0\nLevel: 1/10\nXP: 57/100", () -> {
+            WheelOption skill1Option = new WheelOption(SKILL_INFORMATION, displayName, "Prestige: 0\nLevel: 1/10\nXP: 57/100", () -> {
 
             });
 

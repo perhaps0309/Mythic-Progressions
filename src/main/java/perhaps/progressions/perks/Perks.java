@@ -85,7 +85,7 @@ public class Perks {
 
             }));
 
-            WheelOption perkOption = new WheelOption(PERKS_ICON, displayName, "Base Level: 1/3\nPerk Level: 1/10\nXP: 78/100", () -> {
+            WheelOption perkOption = new WheelOption(PERK_INFORMATION, displayName, "Base Level: 1/3\nPerk Level: 1/10\nXP: 78/100", () -> {
 
             });
 

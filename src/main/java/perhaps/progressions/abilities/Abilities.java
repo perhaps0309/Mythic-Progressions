@@ -144,7 +144,7 @@ public class Abilities {
 
             }));
 
-            WheelOption abilityOption = new WheelOption(ABILITIES_ICON, displayName, "Ability Level: 1/10\nXP: 78/100", () -> {
+            WheelOption abilityOption = new WheelOption(ABILITY_INFORMATION, displayName, "Ability Level: 1/10\nXP: 78/100", () -> {
 
             });
 

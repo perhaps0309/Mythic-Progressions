@@ -51,6 +51,12 @@ public class WheelSelectionScreen extends Screen {
 
     public static final ResourceLocation PRESTIGE_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/prestige.png");
     public static final ResourceLocation UPGRADE_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/upgrade.png");
+
+    public static final ResourceLocation PERK_INFORMATION = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/perks/information.png");
+    public static final ResourceLocation SKILL_INFORMATION = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/skills/information.png");
+    public static final ResourceLocation ABILITY_INFORMATION = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/abilities/information.png");
+    public static final ResourceLocation MAGIC_INFORMATION = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/magic_information.png");
+    public static final ResourceLocation GENERAL_INFORMATION = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/general_information.png");
     public static final SoundEvent HOVER_SOUND = new SoundEvent(new ResourceLocation(MythicProgressions.MOD_ID, "hover_sound"));
     public static final SoundEvent CLICK_SOUND = new SoundEvent(new ResourceLocation(MythicProgressions.MOD_ID, "click_sound"));
 
