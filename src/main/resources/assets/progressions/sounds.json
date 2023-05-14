@@ -4,5 +4,17 @@
     "sounds": [
       "progressions:hover_sound"
     ]
+  },
+  "level_up_sound": {
+    "subtitle": "sounds.progressions.level_up_sound",
+    "sounds": [
+      "progressions:level_up_sound"
+    ]
+  },
+  "error_sound": {
+    "subtitle": "sounds.progressions.error_sound",
+    "sounds": [
+      "progressions:error_sound"
+    ]
   }
 }

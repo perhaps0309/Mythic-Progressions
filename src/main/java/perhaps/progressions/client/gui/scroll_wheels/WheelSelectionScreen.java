@@ -58,7 +58,8 @@ public class WheelSelectionScreen extends Screen {
     public static final ResourceLocation MAGIC_INFORMATION = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/magic_information.png");
     public static final ResourceLocation GENERAL_INFORMATION = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/general_information.png");
     public static final SoundEvent HOVER_SOUND = new SoundEvent(new ResourceLocation(MythicProgressions.MOD_ID, "hover_sound"));
-    public static final SoundEvent CLICK_SOUND = new SoundEvent(new ResourceLocation(MythicProgressions.MOD_ID, "click_sound"));
+    public static final SoundEvent LEVEL_UP_SOUND = new SoundEvent(new ResourceLocation(MythicProgressions.MOD_ID, "level_up_sound"));
+    public static final SoundEvent ERROR_SOUND = new SoundEvent(new ResourceLocation(MythicProgressions.MOD_ID, "error_sound"));
 
     public WheelSelectionScreen(ScrollWheel rootScrollWheel) {
         super(new TextComponent("Wheel Selection"));
@@ -139,7 +140,7 @@ public class WheelSelectionScreen extends Screen {
         int adjustedRadius = isSelected ? wheelRadius + 3 : wheelRadius;
         int x = centerX + (int) (Math.cos(Math.toRadians(angle)) * adjustedRadius);
         int y = centerY + (int) (Math.sin(Math.toRadians(angle)) * adjustedRadius);
-        int iconSize = isSelected ? 20 : 16;  // Increase icon size when selected
+        int iconSize = isSelected ? 24 : 20;  // Increase icon size when selected
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, option.icon);
@@ -297,7 +298,15 @@ public class WheelSelectionScreen extends Screen {
         if (button == 0 && hoveredOptionIndex != -1) {  // 0 is the left mouse button
             WheelOption hoveredOption = currentScrollWheel.getOptions().get(hoveredOptionIndex);
             hoveredOption.action.run();  // Run the action associated with the hovered option
-            playClickSound();
+            if (hoveredOption.soundEffect != null) {
+                if (hoveredOption.conditionalCallback.get()) {
+                    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(hoveredOption.soundEffect, 1.0F));
+                } else if(hoveredOption.playErrorSound) {
+                    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(ERROR_SOUND, 1.0F));
+                } else playClickSound();
+            } else {
+                playClickSound();
+            }
 
             return true;
         }

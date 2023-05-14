@@ -146,15 +146,20 @@ public class Skills {
 
             }));
 
-            skill1Wheel.addOption(new WheelOption(UPGRADE_ICON, "Level Up", "Level up your skill", () -> {
+            WheelOption levelUpOption = new WheelOption(UPGRADE_ICON, "Level Up", "Level up your skill", () -> {
 
-            }));
+            });
+
+            levelUpOption.addSound(1.0f, LEVEL_UP_SOUND, true, () -> {
+                return false; // No error here
+            });
 
             WheelOption skill1Option = new WheelOption(SKILL_INFORMATION, displayName, "Prestige: 0\nLevel: 1/10\nXP: 57/100", () -> {
 
             });
 
             skill1Wheel.addOption(skill1Option);
+            skill1Wheel.addOption(levelUpOption);
             WheelSelectionManager.openWheelSelectionScreen(globalPlayer, skill1Wheel);
         }));
     }
