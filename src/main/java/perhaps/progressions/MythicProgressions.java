@@ -1,13 +1,13 @@
 package perhaps.progressions;
 
 import com.mojang.logging.LogUtils;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
+import perhaps.progressions.capabilities.CapabilityHandler;
 import perhaps.progressions.client.keybinds.Keybinds;
 import perhaps.progressions.enchantments.Enchantments;
 
@@ -22,7 +22,8 @@ public class MythicProgressions {
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
         Enchantments.initializeEnchantments(eventBus);
-        MinecraftForge.EVENT_BUS.register(this);
+        eventBus.register(new CapabilityHandler());
+        eventBus.register(this);
     }
 
     private void setup(final FMLCommonSetupEvent event) {

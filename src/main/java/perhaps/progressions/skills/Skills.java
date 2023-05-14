@@ -22,7 +22,7 @@ public class Skills {
         });
     }
 
-    private final Map<String, Map<String, Object>> skills = Map.ofEntries(
+    public final Map<String, Map<String, Object>> skills = Map.ofEntries(
             Map.entry("arcane_mastery", Map.of(
                     "displayName", "Arcane Mastery",
                     "description", "Improves your proficiency with magic, increasing the damage, range, and accuracy of your spells.",

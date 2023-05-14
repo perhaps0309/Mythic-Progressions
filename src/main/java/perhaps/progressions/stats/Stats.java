@@ -14,11 +14,11 @@ import static perhaps.progressions.client.gui.scroll_wheels.WheelSelectionScreen
 
 public class Stats {
     public void initializeStats() {
-        stats.forEach((skillName, skillObject) -> {
-            String displayName = (String) skillObject.get("displayName");
-            String description = (String) skillObject.get("description");
-            String saveName = (String) skillObject.get("saveName");
-            Runnable callback = (Runnable) skillObject.get("callback");
+        stats.forEach((statName, statObject) -> {
+            String displayName = (String) statObject.get("displayName");
+            String description = (String) statObject.get("description");
+            String saveName = (String) statObject.get("saveName");
+            Runnable callback = (Runnable) statObject.get("callback");
 
             addStat(displayName, description, saveName, callback);
         });

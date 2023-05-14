@@ -11,16 +11,14 @@ import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.glfw.GLFW;
 import perhaps.progressions.MythicProgressions;
 import perhaps.progressions.client.gui.WheelSelectionManager;
-import perhaps.progressions.client.gui.scroll_wheels.WheelOption;
 
 import static perhaps.progressions.client.gui.WheelSelectionManager.*;
-import static perhaps.progressions.client.gui.scroll_wheels.WheelSelectionScreen.*;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = MythicProgressions.MOD_ID, value = Dist.CLIENT)
 public class Keybinds {
     public static KeyMapping openWheelSelectionScreen;
-    public static KeyMapping reinitializeWheelSelection; // This is a temporary button for dev-use
+    public static KeyMapping reinitializeWheelSelection;
 
     public static void init() {
         openWheelSelectionScreen = new KeyMapping("key.progressions.open_wheel_selection", GLFW.GLFW_KEY_P, "category.progressions");
@@ -37,10 +35,8 @@ public class Keybinds {
             return;
         }
 
-        if (!openWheelSelectionScreen.consumeClick()) return;
         Player player = Minecraft.getInstance().player;
-
-        if (player == null) return;
+        if (player == null || !openWheelSelectionScreen.consumeClick()) return;
         if (!isWheelSetup) setupWheel(player);
 
         WheelSelectionManager.openWheelSelectionScreen(player, rootScrollWheel);

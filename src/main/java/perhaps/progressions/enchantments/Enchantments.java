@@ -1,16 +1,24 @@
 package perhaps.progressions.enchantments;
 
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import perhaps.progressions.MythicProgressions;
+import perhaps.progressions.capabilities.skills.SkillProvider;
 import perhaps.progressions.enchantments.enchantments.AutoSmeltEnchantment;
 
 import java.util.Map;
 
+@Mod.EventBusSubscriber(modid = MythicProgressions.MOD_ID)
 public class Enchantments {
     @FunctionalInterface
     public interface EnchantmentCallback {
@@ -51,5 +59,12 @@ public class Enchantments {
                 // Everything should be handled from callback
             };
         });
+    }
+
+    @SubscribeEvent
+    public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
+        if (!(event.getObject() instanceof Player)) return;
+        if (event.getObject().getCapability(SkillProvider.playerSkillsCapability).isPresent()) return;
+        event.addCapability(new ResourceLocation(MythicProgressions.MOD_ID, "properties"), new SkillProvider());
     }
 }

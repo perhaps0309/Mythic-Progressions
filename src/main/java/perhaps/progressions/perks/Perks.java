@@ -3,12 +3,12 @@ package perhaps.progressions.perks;
 import perhaps.progressions.client.gui.WheelSelectionManager;
 import perhaps.progressions.client.gui.scroll_wheels.ScrollWheel;
 import perhaps.progressions.client.gui.scroll_wheels.WheelOption;
+import perhaps.progressions.capabilities.skills.SkillProvider;
 
 import java.util.Map;
 
 import static perhaps.progressions.client.gui.WheelSelectionManager.*;
 import static perhaps.progressions.client.gui.scroll_wheels.WheelSelectionScreen.*;
-import static perhaps.progressions.client.gui.scroll_wheels.WheelSelectionScreen.SKILLS_ICON;
 
 public class Perks {
     public void initializePerks() {
@@ -76,6 +76,14 @@ public class Perks {
     public static void addPerk(String displayName, String description, String saveName, Runnable callback) {
         perksScrollWheel.addOption(new WheelOption(PERKS_ICON, displayName, description, () -> {
             callback.run();
+            globalPlayer.getCapability(SkillProvider.playerSkillsCapability).ifPresent(skills -> {
+                System.out.println("perhaps is hot");
+                skills.forEach((skillName, skill) -> {
+                    System.out.println(skill.getSkillData());
+                    skill.modifySkillData("skillLevel", skill.getSkillData().get("skillLevel") + 1);
+                });
+            });
+
             ScrollWheel perkWheel = new ScrollWheel(perksScrollWheel);
             perkWheel.addOption(new WheelOption(PRESTIGE_ICON, "Sacrifice", "Sacrifice your perk with 3 netherrite blocks.", () -> {
 
