@@ -31,4 +31,10 @@ public class Skill {
             skillData.put(dataName, nbt.getInt((dataName)));
         });
     }
+
+    public void copyFrom(Skill skill) {
+        skillData.forEach((dataName, data) -> {
+            skillData.put(dataName, skill.getSkillData().get(dataName));
+        });
+    }
 }

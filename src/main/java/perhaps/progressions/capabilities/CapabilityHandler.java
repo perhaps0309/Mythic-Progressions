@@ -3,7 +3,9 @@ package perhaps.progressions.capabilities;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.intellij.lang.annotations.Identifier;
@@ -22,5 +24,23 @@ public class CapabilityHandler {
                 System.out.println(skill.getSkillData());
             });
         });
+    }
+
+    @SubscribeEvent
+    public static void onPlayerCloned(PlayerEvent.Clone event) {
+        if (!event.isWasDeath()) return;
+
+        event.getOriginal().getCapability(SkillProvider.playerSkillsCapability).ifPresent(originalSkills -> {
+            event.getOriginal().getCapability(SkillProvider.playerSkillsCapability).ifPresent(clonedSkills -> {
+                clonedSkills.forEach((skillName, skill) -> {
+                    skill.copyFrom(originalSkills.get(skillName));
+                });
+            });
+        });
+    }
+
+    @SubscribeEvent
+    public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+        event.register(SkillProvider.class);
     }
 }
