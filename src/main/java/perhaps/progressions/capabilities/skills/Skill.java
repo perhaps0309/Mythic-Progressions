@@ -10,7 +10,14 @@ public class Skill {
     private final Map<String, Integer> skillData = Stream.of(
             Map.entry("skillLevel", 0),
             Map.entry("skillXP", 0),
-            Map.entry("skillPrestige", 0)
+            Map.entry("skillPrestige", 0),
+
+            Map.entry("skillLevelMin", 1),
+            Map.entry("skillLevelMax", 10),
+            Map.entry("skillXPMin", 0),
+            Map.entry("skillXPMax", 1000000),
+            Map.entry("skillPrestigeMin", 0),
+            Map.entry("skillPrestigeMax", 25)
     ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
     public Map<String, Integer> getSkillData() {
@@ -19,7 +26,9 @@ public class Skill {
 
     public void modifySkillData(String skillDataName, int modifiedData) {
         if (skillData.get(skillDataName) == null) return; // No unexpected entries!
-        skillData.put(skillDataName, modifiedData);
+
+        int newData = Math.max(skillData.get(skillDataName + "Min"), Math.min(skillData.get(skillDataName + "Max"), modifiedData));
+        skillData.put(skillDataName, newData);
     }
 
     public void saveNBTData(CompoundTag nbt) {

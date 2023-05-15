@@ -77,10 +77,10 @@ public class Perks {
         perksScrollWheel.addOption(new WheelOption(PERKS_ICON, displayName, description, () -> {
             callback.run();
             globalPlayer.getCapability(SkillProvider.playerSkillsCapability).ifPresent(skills -> {
-                System.out.println("perhaps is hot");
                 skills.forEach((skillName, skill) -> {
-                    System.out.println(skill.getSkillData());
-                    skill.modifySkillData("skillLevel", skill.getSkillData().get("skillLevel") + 1);
+                    skill.modifySkillData("skillLevel", skill.getSkillData().get("skillLevel") + 4);
+                    skill.modifySkillData("skillXP", skill.getSkillData().get("skillXP") + 5);
+                    skill.modifySkillData("skillPrestige", skill.getSkillData().get("skillPrestige") + 15);
                 });
             });
 

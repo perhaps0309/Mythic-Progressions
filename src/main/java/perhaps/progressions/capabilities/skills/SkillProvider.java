@@ -57,7 +57,9 @@ public class SkillProvider implements ICapabilityProvider, INBTSerializable<Comp
         System.out.println("SERIALIZING");
         CompoundTag nbt = new CompoundTag();
         createPlayerSkills().forEach((playerSkill, skillData) -> {
-            skillData.saveNBTData(nbt);
+            CompoundTag skillNBT = new CompoundTag();
+            skillData.saveNBTData(skillNBT);
+            nbt.put(playerSkill, skillNBT);
         });
         return nbt;
     }
@@ -66,7 +68,9 @@ public class SkillProvider implements ICapabilityProvider, INBTSerializable<Comp
     public void deserializeNBT(CompoundTag nbt) {
         System.out.println("DESERIALIZING");
         createPlayerSkills().forEach((playerSkill, skillData) -> {
-            skillData.loadNBTData(nbt);
+            if (nbt.contains(playerSkill)) {
+                skillData.loadNBTData(nbt.getCompound(playerSkill));
+            }
         });
     }
 }
