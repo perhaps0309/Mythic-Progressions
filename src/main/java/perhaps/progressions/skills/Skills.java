@@ -134,19 +134,27 @@ public class Skills {
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
+            )),
+            Map.entry("auto_compression", Map.of(
+                    "displayName", "Auto Compression",
+                    "description", "Automatically compresses blocks/items.",
+                    "saveName", "auto_compression",
+                    "callback", (Runnable) () -> {
+                        System.out.println("Pressed!");
+                    }
             ))
     );
 
     public static void addSkill(String displayName, String description, String saveName, Runnable callback) {
-        ResourceLocation tempIcon = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/skills/" + saveName + ".png");
-        skillsScrollWheel.addOption(new WheelOption(tempIcon, displayName, description, () -> {
+        ResourceLocation icon = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/skills/" + saveName + ".png");
+        skillsScrollWheel.addOption(new WheelOption(icon, displayName, description, () -> {
             callback.run();
             ScrollWheel skill1Wheel = new ScrollWheel(skillsScrollWheel);
-            skill1Wheel.addOption(new WheelOption(PRESTIGE_ICON, "Prestige", "Prestige your skill", () -> {
+            skill1Wheel.addOption(new WheelOption(SKILL_PRESTIGE, "Prestige", "Prestige your skill", () -> {
 
             }));
 
-            WheelOption levelUpOption = new WheelOption(UPGRADE_ICON, "Level Up", "Level up your skill", () -> {
+            WheelOption levelUpOption = new WheelOption(SKILL_UPGRADE, "Level Up", "Level up your skill", () -> {
 
             });
 

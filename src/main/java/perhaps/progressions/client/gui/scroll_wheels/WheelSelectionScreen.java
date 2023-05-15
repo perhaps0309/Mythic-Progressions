@@ -3,7 +3,6 @@ package perhaps.progressions.client.gui.scroll_wheels;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -49,12 +48,19 @@ public class WheelSelectionScreen extends Screen {
     public static final ResourceLocation MODE_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/settings/mode.png");
     public static final ResourceLocation BACK_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/back.png");
 
-    public static final ResourceLocation PRESTIGE_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/prestige.png");
+    public static final ResourceLocation REROLL_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/prestige.png");
     public static final ResourceLocation UPGRADE_ICON = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/upgrade.png");
 
-    public static final ResourceLocation PERK_INFORMATION = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/perks/information.png");
-    public static final ResourceLocation SKILL_INFORMATION = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/skills/information.png");
-    public static final ResourceLocation ABILITY_INFORMATION = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/abilities/information.png");
+    public static final ResourceLocation PERK_SACRIFICE = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/perks/perk_sacrifice.png");
+    public static final ResourceLocation SKILL_PRESTIGE = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/perks/perk_sacrifice.png");
+
+    public static final ResourceLocation PERK_UPGRADE = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/perks/perk_upgrade.png");
+    public static final ResourceLocation SKILL_UPGRADE = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/skills/skill_upgrade.png");
+    public static final ResourceLocation ABILITY_UPGRADE = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/abilities/ability_upgrade.png");
+
+    public static final ResourceLocation PERK_INFORMATION = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/perks/perk_information.png");
+    public static final ResourceLocation SKILL_INFORMATION = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/skills/skill_information.png");
+    public static final ResourceLocation ABILITY_INFORMATION = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/abilities/ability_information.png");
     public static final ResourceLocation MAGIC_INFORMATION = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/magic_information.png");
     public static final ResourceLocation GENERAL_INFORMATION = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/general_information.png");
     public static final SoundEvent HOVER_SOUND = new SoundEvent(new ResourceLocation(MythicProgressions.MOD_ID, "hover_sound"));

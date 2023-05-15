@@ -1,5 +1,7 @@
 package perhaps.progressions.abilities;
 
+import net.minecraft.resources.ResourceLocation;
+import perhaps.progressions.MythicProgressions;
 import perhaps.progressions.client.gui.WheelSelectionManager;
 import perhaps.progressions.client.gui.scroll_wheels.ScrollWheel;
 import perhaps.progressions.client.gui.scroll_wheels.WheelOption;
@@ -22,7 +24,7 @@ public class Abilities {
     }
 
     private final Map<String, Map<String, Object>> abilities = Map.ofEntries(
-            Map.entry("arcane_mastery", Map.of(
+            Map.entry("elemental_affinity", Map.of(
                     "displayName", "Elemental Affinity",
                     "description", "Improves your resistance to the primary types of elemental magic.",
                     "saveName", "elemental_affinity",
@@ -33,7 +35,7 @@ public class Abilities {
             Map.entry("mana_channel", Map.of(
                     "displayName", "Mana Channel",
                     "description", "Increases your mana regeneration rate for a short period.",
-                    "saveName", "elemental_control",
+                    "saveName", "mana_channel",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
@@ -65,7 +67,7 @@ public class Abilities {
             Map.entry("elemental_surge", Map.of(
                     "displayName", "Elemental Surge",
                     "description", "Unleashes a powerful burst of elemental energy, damaging nearby enemies.",
-                    "saveName", "elemental_control",
+                    "saveName", "elemental_surge",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
@@ -102,10 +104,10 @@ public class Abilities {
                         System.out.println("Pressed!");
                     }
             )),
-            Map.entry("atheletes_dash", Map.of(
+            Map.entry("athletes_dash", Map.of(
                     "displayName", "Athlete's Dash",
                     "description", "Temporarily enhances your running speed, jump height, and swimming speed.",
-                    "saveName", "atheletes_dash",
+                    "saveName", "athletes_dash",
                     "callback", (Runnable) () -> {
                         System.out.println("Pressed!");
                     }
@@ -133,14 +135,15 @@ public class Abilities {
     }
 
     public static void addAbility(String displayName, String description, String saveName, Runnable callback) {
-        abilitiesScrollWheel.addOption(new WheelOption(ABILITIES_ICON, displayName, description, () -> {
+        ResourceLocation icon = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/abilities/" + saveName + ".png");
+        abilitiesScrollWheel.addOption(new WheelOption(icon, displayName, description, () -> {
             callback.run();
             ScrollWheel abilityWheel = new ScrollWheel(abilitiesScrollWheel);
-            abilityWheel.addOption(new WheelOption(PRESTIGE_ICON, "Reroll", "Reroll your ability upon reaching level 10.", () -> {
+            abilityWheel.addOption(new WheelOption(REROLL_ICON, "Reroll", "Reroll your ability upon reaching level 10.", () -> {
 
             }));
 
-            abilityWheel.addOption(new WheelOption(UPGRADE_ICON, "Level Up", "Level up your ability", () -> {
+            abilityWheel.addOption(new WheelOption(ABILITY_UPGRADE, "Level Up", "Level up your ability", () -> {
 
             }));
 
