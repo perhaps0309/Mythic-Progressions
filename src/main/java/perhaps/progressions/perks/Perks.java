@@ -79,13 +79,6 @@ public class Perks {
         ResourceLocation icon = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/perks/" + saveName + ".png");
         perksScrollWheel.addOption(new WheelOption(icon, displayName, description, () -> {
             callback.run();
-            globalPlayer.getCapability(SkillProvider.playerSkillsCapability).ifPresent(skills -> {
-                skills.forEach((skillName, skill) -> {
-                    skill.modifySkillData("skillLevel", skill.getSkillData().get("skillLevel") + 4);
-                    skill.modifySkillData("skillXP", skill.getSkillData().get("skillXP") + 5);
-                    skill.modifySkillData("skillPrestige", skill.getSkillData().get("skillPrestige") + 15);
-                });
-            });
 
             ScrollWheel perkWheel = new ScrollWheel(perksScrollWheel);
             perkWheel.addOption(new WheelOption(PERK_SACRIFICE, "Sacrifice", "Sacrifice your perk with 3 netherrite blocks.", () -> {

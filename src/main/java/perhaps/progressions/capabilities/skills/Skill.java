@@ -8,9 +8,9 @@ import java.util.stream.Stream;
 
 public class Skill {
     private final Map<String, Integer> skillData = Stream.of(
-            Map.entry("skillLevel", 0),
+            Map.entry("skillLevel", 1),
             Map.entry("skillXP", 0),
-            Map.entry("skillPrestige", 0),
+            Map.entry("skillPrestige", 1),
 
             Map.entry("skillLevelMin", 1),
             Map.entry("skillLevelMax", 10),
