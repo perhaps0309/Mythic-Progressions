@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 public class SkillProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
-    public static Capability<Map<String, Skill>> playerSkillsCapability = CapabilityManager.get(new CapabilityToken<Map<String, Skill>>() {});
+    public static Capability<Map<String, Skill>> playerSkillsCapability = CapabilityManager.get(new CapabilityToken<>() {});
 
     private Map<String, Skill> playerSkills = null;
     private final LazyOptional<Map<String, Skill>> optional = LazyOptional.of(this::createPlayerSkills);

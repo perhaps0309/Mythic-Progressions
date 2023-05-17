@@ -148,19 +148,6 @@ public class Skills {
             ))
     );
 
-    public static int getNeededXP(int currentLevel, int currentPrestige) {
-        int neededXP = 100;
-        for (int level = 2; level <= currentLevel; level++) {
-            double prestigeMultiplier = 1 + (65.0 * currentPrestige / 100.0);
-            neededXP *= prestigeMultiplier;
-        }
-        return (int) neededXP;
-    }
-
-    public static boolean canLevelUpSkill(int currentXP, int currentLevel, int currentPrestige) {
-        return currentLevel != 10 && currentXP >= getNeededXP(currentLevel, currentPrestige);
-    }
-
     public static Skill getSkill(String name) {
         Map<String, Skill> skills = globalPlayer.getCapability(SkillProvider.playerSkillsCapability).orElseThrow(() -> new IllegalStateException("Cannot get the skills capability from the player!"));
 
@@ -178,32 +165,23 @@ public class Skills {
 
             WheelOption levelUpOption = new WheelOption(SKILL_UPGRADE, "Level Up", "Level up your skill", () -> {
                 Skill tempSkill = getSkill(saveName);
-                Map<String, Integer> skillData = tempSkill.getSkillData();
-
-                if (skillData.get("skillXP") == null) return;
-
-                int currentXP = skillData.get("skillXP");
-                int currentLevel = skillData.get("skillLevel");
-                int currentPrestige = skillData.get("skillPrestige");
-                if (canLevelUpSkill(currentXP, currentLevel, currentPrestige)) {
-                    tempSkill.modifySkillData("skillLevel", currentLevel + 1);
-                    tempSkill.modifySkillData("skillXP", currentXP - getNeededXP(currentLevel, currentPrestige));
+                float currentXP = tempSkill.get("xp");
+                float currentLevel = tempSkill.get("level");
+                float neededXp = tempSkill.get("neededXp");
+                if (currentLevel == 10) return;
+                if (currentXP >= neededXp) {
+                    tempSkill.add("level", 1f);
+                    tempSkill.subtract("xp", neededXp);
                 }
             });
 
-            final int[] previousXP = {-1};
             levelUpOption.addSound(1.0f, LEVEL_UP_SOUND, true, () -> {
                 Skill tempSkill = getSkill(saveName);
-                Map<String, Integer> skillData = tempSkill.getSkillData();
-
-                if (skillData.get("skillXP") == null) return false;
-
-                int currentXP = skillData.get("skillXP");
-                int currentLevel = skillData.get("skillLevel");
-                int currentPrestige = skillData.get("skillPrestige");
-                previousXP[0] = currentXP;
-
-                return canLevelUpSkill(currentXP, currentLevel, currentPrestige);
+                float currentXP = tempSkill.get("xp");
+                float currentLevel = tempSkill.get("level");
+                float neededXp = tempSkill.get("neededXp");
+                if (currentLevel == 10) return false;
+                return currentXP >= neededXp;
             });
 
             WheelOption skill1Option = new WheelOption(SKILL_INFORMATION, displayName, "Prestige: null\nLevel: null/10\nXP: null/null", () -> {
@@ -212,22 +190,14 @@ public class Skills {
 
             skill1Option.addHover(() -> {
                 Skill tempSkill = getSkill(saveName);
-                if(previousXP[0] != -1) {
-                    tempSkill.modifySkillData("skillXP", previousXP[0] + 1);
-                    previousXP[0]++;
-                }
+                float currentXP = tempSkill.get("xp");
+                float currentLevel = tempSkill.get("level");
+                float currentPrestige = tempSkill.get("prestige");
+                float neededXp = tempSkill.get("neededXp");
 
-                Map<String, Integer> skillData = tempSkill.getSkillData();
+                tempSkill.add("xp", 0.1f);
 
-                int currentXP = skillData.get("skillXP");
-                int currentLevel = skillData.get("skillLevel");
-                int currentPrestige = skillData.get("skillPrestige");
-                int neededXP = getNeededXP(currentLevel, currentPrestige);
-                if(previousXP[0] == -1) {
-                    previousXP[0] = currentXP;
-                }
-
-                skill1Option.description = "Prestige: " + currentPrestige + "\nLevel: " + currentLevel + "/10\nXP: " + currentXP + "/" + neededXP;
+                skill1Option.description = String.format("Prestige: %.0f\nLevel: %.0f/10\nXP: %.1f/%.1f", currentPrestige, currentLevel, currentXP, neededXp);
             });
 
             skill1Wheel.addOption(skill1Option);

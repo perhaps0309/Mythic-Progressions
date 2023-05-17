@@ -3,6 +3,7 @@ package perhaps.progressions.capabilities;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -10,20 +11,16 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.intellij.lang.annotations.Identifier;
 import perhaps.progressions.MythicProgressions;
+import perhaps.progressions.capabilities.skills.Skill;
 import perhaps.progressions.capabilities.skills.SkillProvider;
 
 @Mod.EventBusSubscriber(modid = MythicProgressions.MOD_ID)
 public class CapabilityHandler {
     @SubscribeEvent
     public static void attachCapability(AttachCapabilitiesEvent<Entity> event) {
-        if (!(event.getObject() instanceof ServerPlayer)) return;
+        if (!(event.getObject() instanceof Player)) return;
+        if (event.getObject().getCapability(SkillProvider.playerSkillsCapability).isPresent()) return;
         event.addCapability(new ResourceLocation(MythicProgressions.MOD_ID, "player_skills"), new SkillProvider());
-
-        event.getObject().getCapability(SkillProvider.playerSkillsCapability).ifPresent(skills -> {
-            skills.forEach((skillName, skill) -> {
-                System.out.println(skill.getSkillData());
-            });
-        });
     }
 
     @SubscribeEvent
@@ -41,6 +38,6 @@ public class CapabilityHandler {
 
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
-        event.register(SkillProvider.class);
+        event.register(Skill.class);
     }
 }
