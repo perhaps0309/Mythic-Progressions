@@ -22,4 +22,8 @@ public class ScrollWheel {
     public List<WheelOption> getOptions() {
         return options;
     }
+    public void setOptions(List<WheelOption> options) {
+        this.options.clear();
+        this.options.addAll(options);
+    }
 }

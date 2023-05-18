@@ -3,6 +3,7 @@ package perhaps.progressions.client.gui.scroll_wheels;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -13,6 +14,7 @@ import net.minecraft.sounds.SoundEvent;
 import perhaps.progressions.MythicProgressions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class WheelSelectionScreen extends Screen {
@@ -82,19 +84,81 @@ public class WheelSelectionScreen extends Screen {
         angleStep = 360.0 / currentScrollWheel.getOptions().size();
     }
 
+    private static List<WheelOption> addElement(List<WheelOption> arr, WheelOption element, int position) {
+        List<WheelOption> result = new ArrayList<>(arr.size() + 1);
+        result.addAll(arr.subList(0, position));
+        result.add(element);
+        result.addAll(arr.subList(position, arr.size()));
+        return result;
+    }
+
     @Override
     protected void init() {
-        super.init();
+        //super.init();
         centerX = width / 2;
         centerY = height / 2;
         angleStep = 360.0 / currentScrollWheel.getOptions().size();
 
         if (currentScrollWheel.getParent() != null) {
             currentScrollWheel.getOptions().removeIf(option -> option.title.equals("Go Back"));
-            currentScrollWheel.addOption(new WheelOption(BACK_ICON, "Go Back", "Go back to previous wheel", () -> {
+
+            angleStep = 360.0 / (currentScrollWheel.getOptions().size() + 1);
+
+            // Calculate the desired angle for the "Go Back" option
+            double desiredAngleBack = 270; // Angle pointing towards the left side
+            double desiredAngleForward = 90; // Angle pointing towards the right side
+
+            // Calculate the index of the option closest to the desired angle
+            int optionCount = currentScrollWheel.getOptions().size();
+            if (currentScrollWheel.getOptions().size() >= 10) {
+                angleStep = 360.0 / (currentScrollWheel.getOptions().size() + 2);
+                currentScrollWheel.getOptions().removeIf(option -> option.title.equals("Go Forward"));
+
+                List<WheelOption> currentPage = new ArrayList<>();
+                List<WheelOption> nextPageOptions = new ArrayList<>();
+
+                for (int i = 0; i < currentScrollWheel.getOptions().size(); i++) {
+                    if (i > 10) {
+                        nextPageOptions.add(currentScrollWheel.getOptions().get(i));
+                    } else {
+                        currentPage.add(currentScrollWheel.getOptions().get(i));
+                    }
+                }
+
+                currentScrollWheel.setOptions(currentPage);
+
+                int closestOptionIndexForward = (int) Math.round(desiredAngleForward / angleStep);
+                closestOptionIndexForward = Math.max(0, Math.min(optionCount, closestOptionIndexForward));
+
+                WheelOption goForward = new WheelOption(BACK_ICON, "Go Forward", "Go forward to next wheel", () -> {
+                    ScrollWheel nextWheel = new ScrollWheel(currentScrollWheel);
+                    for (WheelOption option : nextPageOptions) {
+                        nextWheel.addOption(option);
+                        currentScrollWheel.addOption(option);
+                    }
+
+                    currentScrollWheel = nextWheel;
+                    init();
+                });
+
+                goForward.addRotation(180);
+
+                currentScrollWheel.setOptions(addElement(currentScrollWheel.getOptions(), goForward, closestOptionIndexForward));
+
+                optionCount = currentScrollWheel.getOptions().size();
+            }
+
+            int closestOptionIndex = (int) Math.round(desiredAngleBack / angleStep);
+
+            // Ensure the closest option index is within the valid range
+            closestOptionIndex = Math.max(0, Math.min(optionCount, closestOptionIndex));
+
+            WheelOption goBack = new WheelOption(BACK_ICON, "Go Back", "Go back to previous wheel", () -> {
                 currentScrollWheel = currentScrollWheel.getParent();
                 init();
-            }));
+            });
+
+            currentScrollWheel.setOptions(addElement(currentScrollWheel.getOptions(), goBack, closestOptionIndex));
         }
 
         this.currentOptionIndex = 0;
@@ -107,8 +171,9 @@ public class WheelSelectionScreen extends Screen {
 
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+        List<WheelOption> wheelOptions = this.currentScrollWheel.getOptions();
         int selectedIndex = getHoveredOptionIndex(mouseX, mouseY);
-        int totalSize = this.currentScrollWheel.getOptions().size() - 1;
+        int totalSize = wheelOptions.size() - 1;
 
         // Draw the darker grey background circle using drawCircle
         for (int i = 0; i <= totalSize; i++) {
@@ -117,11 +182,11 @@ public class WheelSelectionScreen extends Screen {
 
         for (int i = 0; i <= totalSize; i++) {
             drawCircle(poseStack, centerX, centerY, wheelRadius + 15, wheelRadius - 15, baseColor, selectedIndex, i);
-            drawOption(poseStack, currentScrollWheel.getOptions().get(i), i, i == selectedIndex);
+            drawOption(poseStack, wheelOptions.get(i), i, i == selectedIndex);
         }
 
         if (selectedIndex >= 0) {
-            WheelOption selectedOption = currentScrollWheel.getOptions().get(selectedIndex);
+            WheelOption selectedOption = wheelOptions.get(selectedIndex);
 
             int moveHeight = drawScaledText(poseStack, selectedOption.description, centerX, centerY + 5, 0xFFFFFF, 0.95F, true);
             drawScaledText(poseStack, selectedOption.title, centerX, centerY - moveHeight, 0xFFFFFF, 1.15F, true);
@@ -148,10 +213,20 @@ public class WheelSelectionScreen extends Screen {
         int y = centerY + (int) (Math.sin(Math.toRadians(angle)) * adjustedRadius);
         int iconSize = isSelected ? 24 : 20;  // Increase icon size when selected
 
+        Float rotation = option.rotation;
+        if (rotation == null) {
+            rotation = 0.0f;
+        }
+
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, option.icon);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        blit(poseStack, x - iconSize / 2, y - iconSize / 2, 0, 0, iconSize, iconSize, iconSize, iconSize);
+        poseStack.pushPose();  // Save the current transformation matrix
+        poseStack.translate(x, y, 0);  // Translate to the icon position
+        poseStack.mulPose(Vector3f.ZP.rotationDegrees(rotation));  // Apply rotation
+        poseStack.translate(-(float) iconSize / 2, -(float) iconSize / 2, 0);  // Translate back to the icon's origin
+        blit(poseStack, 0, 0, 0, 0, iconSize, iconSize, iconSize, iconSize);
+        poseStack.popPose();  // Restore the previous transformation matrix
     }
 
     private int getHoveredOptionIndex(int mouseX, int mouseY) {
@@ -303,6 +378,8 @@ public class WheelSelectionScreen extends Screen {
         int hoveredOptionIndex = getHoveredOptionIndex((int) mouseX, (int) mouseY);
         if (button == 0 && hoveredOptionIndex != -1) {  // 0 is the left mouse button
             WheelOption hoveredOption = currentScrollWheel.getOptions().get(hoveredOptionIndex);
+            if (hoveredOption == null) return super.mouseClicked(mouseX, mouseY, button);
+
             hoveredOption.action.run();  // Run the action associated with the hovered option
             if (hoveredOption.soundEffect != null) {
                 if (hoveredOption.conditionalCallback.get()) {

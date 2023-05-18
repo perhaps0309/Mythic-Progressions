@@ -11,6 +11,7 @@ public class WheelOption {
     public String title;
     public String description;
     public Runnable action;
+    public Float rotation;
     public Runnable onHover;
 
     public SoundEvent soundEffect;
@@ -33,5 +34,9 @@ public class WheelOption {
         this.playErrorSound = playError;
         this.conditionalCallback = conditionalCallback;
         this.soundVolume = soundVolume;
+    }
+
+    public void addRotation(float rotation) {
+        this.rotation = rotation;
     }
 }
