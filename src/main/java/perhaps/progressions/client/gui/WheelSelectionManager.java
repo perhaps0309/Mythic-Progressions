@@ -27,7 +27,7 @@ public class WheelSelectionManager {
         isWheelSetup = true;
         globalPlayer = player;
 
-        rootScrollWheel.addOption(new WheelOption(PERKS_ICON, "Perks", "Select a perk to unlock", () -> {
+        rootScrollWheel.addOption(new WheelOption(PERKS_ICON, "Perk", "Select a perk to unlock", () -> {
             WheelSelectionManager.openWheelSelectionScreen(player, perksScrollWheel);
         }));
 

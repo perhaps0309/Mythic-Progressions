@@ -11,6 +11,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.intellij.lang.annotations.Identifier;
 import perhaps.progressions.MythicProgressions;
+import perhaps.progressions.capabilities.perks.Perk;
+import perhaps.progressions.capabilities.perks.PerkProvider;
 import perhaps.progressions.capabilities.skills.Skill;
 import perhaps.progressions.capabilities.skills.SkillProvider;
 
@@ -21,6 +23,7 @@ public class CapabilityHandler {
         if (!(event.getObject() instanceof Player)) return;
         if (event.getObject().getCapability(SkillProvider.playerSkillsCapability).isPresent()) return;
         event.addCapability(new ResourceLocation(MythicProgressions.MOD_ID, "player_skills"), new SkillProvider());
+        event.addCapability(new ResourceLocation(MythicProgressions.MOD_ID, "player_perks"), new PerkProvider());
     }
 
     @SubscribeEvent
@@ -34,10 +37,19 @@ public class CapabilityHandler {
                 });
             });
         });
+
+        event.getOriginal().getCapability(PerkProvider.playerPerksCapability).ifPresent(originalPerks -> {
+            event.getOriginal().getCapability(PerkProvider.playerPerksCapability).ifPresent(clonedPerks -> {
+                clonedPerks.forEach((perkName, perk) -> {
+                    perk.copyFrom(originalPerks.get(perkName));
+                });
+            });
+        });
     }
 
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
         event.register(Skill.class);
+        event.register(Perk.class);
     }
 }
