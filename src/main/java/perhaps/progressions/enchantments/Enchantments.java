@@ -14,15 +14,18 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import perhaps.progressions.MythicProgressions;
 import perhaps.progressions.capabilities.skills.SkillProvider;
-import perhaps.progressions.enchantments.enchantments.AutoSmeltEnchantment;
+import perhaps.progressions.enchantments.enchantments.AutoSmelt;
+import perhaps.progressions.enchantments.enchantments.DeepMiner;
+import perhaps.progressions.enchantments.enchantments.SmokeMastery;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = MythicProgressions.MOD_ID)
 public class Enchantments {
     @FunctionalInterface
     public interface EnchantmentCallback {
-        void run(Enchantment.Rarity rarity, EnchantmentCategory category, EquipmentSlot equipmentSlot);
+        void run(Enchantment.Rarity rarity, EnchantmentCategory category, EquipmentSlot[] equipmentSlots);
     }
 
     private static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, MythicProgressions.MOD_ID);
@@ -34,7 +37,7 @@ public class Enchantments {
             EquipmentSlot equipmentSlot = (EquipmentSlot) enchantmentObject.get("equipmentSlot");
             EnchantmentCallback callback = (EnchantmentCallback) enchantmentObject.get("callback");
 
-            addEnchantment(enchantmentName, rarity, category, equipmentSlot, callback);
+            addEnchantment(enchantmentName, rarity, category, new EquipmentSlot[] { equipmentSlot }, callback);
         });
 
         ENCHANTMENTS.register(eventBus);
@@ -45,26 +48,34 @@ public class Enchantments {
                     "rarity", Enchantment.Rarity.RARE,
                     "category", EnchantmentCategory.DIGGER,
                     "equipmentSlot", EquipmentSlot.MAINHAND,
-                    "callback", (EnchantmentCallback) (Enchantment.Rarity rarity, EnchantmentCategory category, EquipmentSlot equipmentSlot) -> {
-                        new AutoSmeltEnchantment(rarity, category, new EquipmentSlot[] { equipmentSlot });
-                    }
+                    "callback", (EnchantmentCallback) AutoSmelt::new
+            )),
+            Map.entry("smoke_mastery", Map.of(
+                    "rarity", Enchantment.Rarity.RARE,
+                    "category", EnchantmentCategory.WEAPON,
+                    "equipmentSlot", EquipmentSlot.MAINHAND,
+                    "callback", (EnchantmentCallback) SmokeMastery::new
+            )),
+            Map.entry("deep_miner", Map.of(
+                    "rarity", Enchantment.Rarity.RARE,
+                    "category", EnchantmentCategory.WEAPON,
+                    "equipmentSlot", EquipmentSlot.MAINHAND,
+                    "callback", (EnchantmentCallback) DeepMiner::new
             ))
     );
 
-    public static void addEnchantment(String enchantmentName, Enchantment.Rarity rarity, EnchantmentCategory category, EquipmentSlot equipmentSlot, EnchantmentCallback callback) {
+    public static Map<String, Enchantment> registeredEnchantments = new HashMap<>();
+
+    public static void addEnchantment(String enchantmentName, Enchantment.Rarity rarity, EnchantmentCategory category, EquipmentSlot[] equipmentSlots, EnchantmentCallback callback) {
         ENCHANTMENTS.register(enchantmentName, () -> {
-            callback.run(rarity, category, equipmentSlot);
-            return new Enchantment(rarity, category, new EquipmentSlot[] { equipmentSlot }) {
+            callback.run(rarity, category, equipmentSlots);
+            Enchantment dummyEnchantment = new Enchantment(rarity, category, equipmentSlots) {
                 // This is a dummy class to prevent Minecraft from crashing
                 // Everything should be handled from callback
             };
-        });
-    }
 
-    @SubscribeEvent
-    public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
-        if (!(event.getObject() instanceof Player)) return;
-        if (event.getObject().getCapability(SkillProvider.playerSkillsCapability).isPresent()) return;
-        event.addCapability(new ResourceLocation(MythicProgressions.MOD_ID, "properties"), new SkillProvider());
+            registeredEnchantments.put(enchantmentName, dummyEnchantment);
+            return dummyEnchantment;
+        });
     }
 }

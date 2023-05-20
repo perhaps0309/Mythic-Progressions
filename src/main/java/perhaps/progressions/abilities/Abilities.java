@@ -147,15 +147,13 @@ public class Abilities {
 
             }));
 
-            WheelOption abilityOption = new WheelOption(ABILITY_INFORMATION, displayName, "Ability Level: 1/10\nXP: 78/100", () -> {
+            WheelOption abilityInfoOption = new WheelOption(ABILITY_INFORMATION, displayName, "Ability Level: 1/10\nXP: 78/100", () -> {});
 
+            abilityInfoOption.addHover(() -> {
+                abilityInfoOption.description = "Ability Level: 10/10\nXP: 78/100";
             });
 
-            abilityOption.addHover(() -> {
-                abilityOption.description = "Ability Level: 10/10\nXP: 78/100";
-            });
-
-            abilityWheel.addOption(abilityOption);
+            abilityWheel.addOption(abilityInfoOption);
             WheelSelectionManager.openWheelSelectionScreen(globalPlayer, abilityWheel);
         }));
     }

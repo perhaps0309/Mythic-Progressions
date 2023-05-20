@@ -5,7 +5,6 @@ import perhaps.progressions.MythicProgressions;
 import perhaps.progressions.client.gui.WheelSelectionManager;
 import perhaps.progressions.client.gui.scroll_wheels.ScrollWheel;
 import perhaps.progressions.client.gui.scroll_wheels.WheelOption;
-import perhaps.progressions.capabilities.skills.SkillProvider;
 
 import java.util.Map;
 
@@ -89,15 +88,13 @@ public class Perks {
 
             }));
 
-            WheelOption perkOption = new WheelOption(PERK_INFORMATION, displayName, "Base Level: 1/3\nPerk Level: 1/10\nXP: 78/100", () -> {
+            WheelOption perkInfoOption = new WheelOption(PERK_INFORMATION, displayName, "Base Level: 1/3\nPerk Level: 1/10\nXP: 78/100", () -> {});
 
+            perkInfoOption.addHover(() -> {
+                perkInfoOption.description = "Base Level: 3/3\nPerk Level: 1/10\nXP: 78/100";
             });
 
-            perkOption.addHover(() -> {
-                perkOption.description = "Base Level: 3/3\nPerk Level: 1/10\nXP: 78/100";
-            });
-
-            perkWheel.addOption(perkOption);
+            perkWheel.addOption(perkInfoOption);
             WheelSelectionManager.openWheelSelectionScreen(globalPlayer, perkWheel);
         }));
     }

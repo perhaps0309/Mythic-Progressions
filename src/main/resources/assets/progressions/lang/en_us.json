@@ -1,5 +1,10 @@
 {
   "key.progressions.open_wheel_selection": "Open Wheel Selection",
   "key.progressions.reinitialize_wheel_selection": "Reinitialize Wheel Selection",
-  "category.progressions": "Progressions"
+  "category.progressions": "Progressions",
+
+  "enchantment.progressions.smoke_mastery": "Smoke Mastery",
+  "enchantment.progressions.smoke_mastery.desc": "5% chance per level to auto-smoke killed entities and dupe drops.",
+  "enchantment.progressions.auto_smelt": "Auto-Smelt",
+  "enchantment.progressions.auto_smelt.desc": "Auto-smelt blocks and entities."
 }

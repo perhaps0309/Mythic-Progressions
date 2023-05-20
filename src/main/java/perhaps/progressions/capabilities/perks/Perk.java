@@ -1,7 +1,6 @@
 package perhaps.progressions.capabilities.perks;
 
 import net.minecraft.nbt.CompoundTag;
-import perhaps.progressions.capabilities.skills.Skill;
 
 import java.util.HashMap;
 import java.util.Map;

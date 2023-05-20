@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import perhaps.progressions.capabilities.CapabilityHandler;
 import perhaps.progressions.client.keybinds.Keybinds;
 import perhaps.progressions.enchantments.Enchantments;
+import perhaps.progressions.experience.ExperienceManager;
 
 @Mod(MythicProgressions.MOD_ID)
 public class MythicProgressions {
@@ -22,6 +23,7 @@ public class MythicProgressions {
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
         Enchantments.initializeEnchantments(eventBus);
+        ExperienceManager.initializeExperience(eventBus);
         eventBus.register(new CapabilityHandler());
         eventBus.register(this);
     }

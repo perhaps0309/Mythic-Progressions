@@ -99,6 +99,7 @@ public class WheelSelectionScreen extends Screen {
         centerY = height / 2;
         angleStep = 360.0 / currentScrollWheel.getOptions().size();
 
+        // TODO: Automatically seperate wheel into pages once exceeding 10 options
         if (currentScrollWheel.getParent() != null) {
             currentScrollWheel.getOptions().removeIf(option -> option.title.equals("Go Back"));
 

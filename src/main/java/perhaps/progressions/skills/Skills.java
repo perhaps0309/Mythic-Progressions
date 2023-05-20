@@ -8,7 +8,6 @@ import perhaps.progressions.client.gui.WheelSelectionManager;
 import perhaps.progressions.client.gui.scroll_wheels.ScrollWheel;
 import perhaps.progressions.client.gui.scroll_wheels.WheelOption;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static perhaps.progressions.client.gui.WheelSelectionManager.*;
@@ -58,7 +57,7 @@ public class Skills {
                         System.out.println("Pressed!");
                     }
             )),
-            Map.entry("conjuration", Map.of(
+            Map.entry("conjuration", Map.of( // Done XP
                     "displayName", "Conjuration",
                     "description", "Allows you to summon and control creatures from other planes of existence.",
                     "saveName", "conjuration",
@@ -82,7 +81,7 @@ public class Skills {
                         System.out.println("Pressed!");
                     }
             )),
-            Map.entry("mining", Map.of(
+            Map.entry("mining", Map.of( // Done XP
                     "displayName", "Mining",
                     "description", "Enhances your ability to extract resources from the world.",
                     "saveName", "mining",
@@ -122,7 +121,7 @@ public class Skills {
                         System.out.println("Pressed!");
                     }
             )),
-            Map.entry("excavation", Map.of(
+            Map.entry("excavation", Map.of( // Done XP
                     "displayName", "Excavation",
                     "description", "Enhances your ability to dig and extract resources from the soil and rocks.",
                     "saveName", "excavation",
@@ -130,7 +129,7 @@ public class Skills {
                         System.out.println("Pressed!");
                     }
             )),
-            Map.entry("lumberjack", Map.of(
+            Map.entry("lumberjack", Map.of( // Done XP
                     "displayName", "Lumberjack",
                     "description", "Improves your efficiency and speed when chopping down trees.",
                     "saveName", "lumberjack",
@@ -158,8 +157,8 @@ public class Skills {
         ResourceLocation icon = new ResourceLocation(MythicProgressions.MOD_ID + ":textures/gui/icons/skills/" + saveName + ".png");
         skillsScrollWheel.addOption(new WheelOption(icon, displayName, description, () -> {
             callback.run();
-            ScrollWheel skill1Wheel = new ScrollWheel(skillsScrollWheel);
-            skill1Wheel.addOption(new WheelOption(SKILL_PRESTIGE, "Prestige", "Prestige your skill", () -> {
+            ScrollWheel skillWheel = new ScrollWheel(skillsScrollWheel);
+            skillWheel.addOption(new WheelOption(SKILL_PRESTIGE, "Prestige", "Prestige your skill", () -> {
 
             }));
 
@@ -181,28 +180,25 @@ public class Skills {
                 float currentLevel = tempSkill.get("level");
                 float neededXp = tempSkill.get("neededXp");
                 if (currentLevel == 10) return false;
+
                 return currentXP >= neededXp;
             });
 
-            WheelOption skill1Option = new WheelOption(SKILL_INFORMATION, displayName, "Prestige: null\nLevel: null/10\nXP: null/null", () -> {
+            WheelOption skillInfoOption = new WheelOption(SKILL_INFORMATION, displayName, "Prestige: null\nLevel: null/10\nXP: null/null", () -> {});
 
-            });
-
-            skill1Option.addHover(() -> {
+            skillInfoOption.addHover(() -> {
                 Skill tempSkill = getSkill(saveName);
                 float currentXP = tempSkill.get("xp");
                 float currentLevel = tempSkill.get("level");
                 float currentPrestige = tempSkill.get("prestige");
                 float neededXp = tempSkill.get("neededXp");
 
-                tempSkill.add("xp", 0.1f);
-
-                skill1Option.description = String.format("Prestige: %.0f\nLevel: %.0f/10\nXP: %.1f/%.1f", currentPrestige, currentLevel, currentXP, neededXp);
+                skillInfoOption.description = String.format("Prestige: %.0f\nLevel: %.0f/10\nXP: %.1f/%.1f", currentPrestige, currentLevel, currentXP, neededXp);
             });
 
-            skill1Wheel.addOption(skill1Option);
-            skill1Wheel.addOption(levelUpOption);
-            WheelSelectionManager.openWheelSelectionScreen(globalPlayer, skill1Wheel);
+            skillWheel.addOption(skillInfoOption);
+            skillWheel.addOption(levelUpOption);
+            WheelSelectionManager.openWheelSelectionScreen(globalPlayer, skillWheel);
         }));
     }
 }

@@ -5,8 +5,6 @@ import net.minecraft.nbt.CompoundTag;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Skill {
     public static Map<String, Float> skillData = new HashMap<>();
