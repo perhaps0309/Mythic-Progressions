@@ -6,10 +6,7 @@ import perhaps.progressions.capabilities.perks.Perk;
 import perhaps.progressions.capabilities.perks.PerkProvider;
 import perhaps.progressions.capabilities.skills.Skill;
 import perhaps.progressions.capabilities.skills.SkillProvider;
-import perhaps.progressions.experience.events.OnArrowLoose;
-import perhaps.progressions.experience.events.OnBlockBreak;
-import perhaps.progressions.experience.events.OnMovement;
-import perhaps.progressions.experience.events.OnTame;
+import perhaps.progressions.experience.events.*;
 
 import java.util.Objects;
 
@@ -20,6 +17,7 @@ public class ExperienceManager {
         eventBus.register(new OnArrowLoose());
         eventBus.register(new OnTame());
         eventBus.register(new OnMovement());
+        eventBus.register(new DoPostAttack());
     }
 
     public static float calculateXP(float level, float baseXP) {

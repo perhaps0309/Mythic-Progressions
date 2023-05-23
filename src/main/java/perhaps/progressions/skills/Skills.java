@@ -57,7 +57,7 @@ public class Skills {
                         System.out.println("Pressed!");
                     }
             )),
-            Map.entry("conjuration", Map.of( // Done XP
+            Map.entry("conjuration", Map.of( // XP Done
                     "displayName", "Conjuration",
                     "description", "Allows you to summon and control creatures from other planes of existence.",
                     "saveName", "conjuration",
@@ -81,7 +81,7 @@ public class Skills {
                         System.out.println("Pressed!");
                     }
             )),
-            Map.entry("mining", Map.of( // Done XP
+            Map.entry("mining", Map.of( // XP Done
                     "displayName", "Mining",
                     "description", "Enhances your ability to extract resources from the world.",
                     "saveName", "mining",
@@ -105,7 +105,7 @@ public class Skills {
                         System.out.println("Pressed!");
                     }
             )),
-            Map.entry("swordsmanship", Map.of(
+            Map.entry("swordsmanship", Map.of( // XP Done
                     "displayName", "Swordsmanship",
                     "description", "Increases your proficiency with swords, dealing more damage from farther.",
                     "saveName", "swordsmanship",
@@ -121,7 +121,7 @@ public class Skills {
                         System.out.println("Pressed!");
                     }
             )),
-            Map.entry("excavation", Map.of( // Done XP
+            Map.entry("excavation", Map.of( // XP Done
                     "displayName", "Excavation",
                     "description", "Enhances your ability to dig and extract resources from the soil and rocks.",
                     "saveName", "excavation",
@@ -129,7 +129,7 @@ public class Skills {
                         System.out.println("Pressed!");
                     }
             )),
-            Map.entry("lumberjack", Map.of( // Done XP
+            Map.entry("lumberjack", Map.of( // XP Done
                     "displayName", "Lumberjack",
                     "description", "Improves your efficiency and speed when chopping down trees.",
                     "saveName", "lumberjack",

@@ -12,6 +12,7 @@ import static perhaps.progressions.experience.ExperienceManager.grantXP;
 @Mod.EventBusSubscriber(modid = MythicProgressions.MOD_ID)
 public class OnMovement {
     // TODO: Make this support more than just jumping
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public static void onLivingJump(LivingEvent.LivingJumpEvent event) {
         Entity entity = event.getEntity();

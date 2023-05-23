@@ -24,7 +24,7 @@ public class Perks {
     }
 
     private final Map<String, Map<String, Object>> perks = Map.ofEntries(
-            Map.entry("miners_instinct", Map.of(
+            Map.entry("miners_instinct", Map.of( // XP Done
                     "displayName", "Miner's Instinct",
                     "description", "Increases mining speed and ore drop rate.",
                     "saveName", "miners_instinct",

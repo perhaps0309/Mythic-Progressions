@@ -14,6 +14,7 @@ import static perhaps.progressions.experience.ExperienceManager.grantXP;
 
 @Mod.EventBusSubscriber(modid = MythicProgressions.MOD_ID)
 public class OnBlockBreak {
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();

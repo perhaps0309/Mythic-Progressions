@@ -3,8 +3,14 @@
   "key.progressions.reinitialize_wheel_selection": "Reinitialize Wheel Selection",
   "category.progressions": "Progressions",
 
+  "enchantment.progressions.auto_smelt": "Auto-Smelt",
+  "enchantment.progressions.auto_smelt.desc": "Auto-smelt blocks and entities.",
   "enchantment.progressions.smoke_mastery": "Smoke Mastery",
   "enchantment.progressions.smoke_mastery.desc": "5% chance per level to auto-smoke killed entities and dupe drops.",
-  "enchantment.progressions.auto_smelt": "Auto-Smelt",
-  "enchantment.progressions.auto_smelt.desc": "Auto-smelt blocks and entities."
+  "enchantment.progressions.beheading": "Beheading",
+  "enchantment.progressions.beheading.desc": "5% chance per level for entity head drops.",
+  "enchantment.progressions.pyromania": "Pyromania",
+  "enchantment.progressions.pyromania.desc": "Deals 10% extra damage per level to entities on fire.",
+  "enchantment.progressions.deep_miner": "Deep Miner",
+  "enchantment.progressions.deep_miner.desc": "Increases mining speed by 5% per level when below Y level 32."
 }

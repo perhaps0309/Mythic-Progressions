@@ -1,22 +1,14 @@
 package perhaps.progressions.enchantments;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import perhaps.progressions.MythicProgressions;
-import perhaps.progressions.capabilities.skills.SkillProvider;
-import perhaps.progressions.enchantments.enchantments.AutoSmelt;
-import perhaps.progressions.enchantments.enchantments.DeepMiner;
-import perhaps.progressions.enchantments.enchantments.SmokeMastery;
+import perhaps.progressions.enchantments.enchantments.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,16 +43,34 @@ public class Enchantments {
                     "callback", (EnchantmentCallback) AutoSmelt::new
             )),
             Map.entry("smoke_mastery", Map.of(
-                    "rarity", Enchantment.Rarity.RARE,
+                    "rarity", Enchantment.Rarity.VERY_RARE,
                     "category", EnchantmentCategory.WEAPON,
                     "equipmentSlot", EquipmentSlot.MAINHAND,
                     "callback", (EnchantmentCallback) SmokeMastery::new
             )),
             Map.entry("deep_miner", Map.of(
                     "rarity", Enchantment.Rarity.RARE,
-                    "category", EnchantmentCategory.WEAPON,
+                    "category", EnchantmentCategory.DIGGER,
                     "equipmentSlot", EquipmentSlot.MAINHAND,
                     "callback", (EnchantmentCallback) DeepMiner::new
+            )),
+            Map.entry("beheading", Map.of(
+                    "rarity", Enchantment.Rarity.VERY_RARE,
+                    "category", EnchantmentCategory.WEAPON,
+                    "equipmentSlot", EquipmentSlot.MAINHAND,
+                    "callback", (EnchantmentCallback) Beheading::new
+            )),
+            Map.entry("stone_breaker", Map.of(
+                    "rarity", Enchantment.Rarity.UNCOMMON,
+                    "category", EnchantmentCategory.DIGGER,
+                    "equipmentSlot", EquipmentSlot.MAINHAND,
+                    "callback", (EnchantmentCallback) StoneBreaker::new
+            )),
+            Map.entry("pyromania", Map.of(
+                    "rarity", Enchantment.Rarity.RARE,
+                    "category", EnchantmentCategory.WEAPON,
+                    "equipmentSlot", EquipmentSlot.MAINHAND,
+                    "callback", (EnchantmentCallback) Pyromania::new
             ))
     );
 

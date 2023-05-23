@@ -8,6 +8,7 @@ import perhaps.progressions.MythicProgressions;
 
 @Mod.EventBusSubscriber(modid = MythicProgressions.MOD_ID)
 public class OnPlayerContainerOpen {
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public static void onPlayerContainerOpen(ScreenEvent event) {
         Screen screen = event.getScreen();
