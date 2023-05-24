@@ -12,5 +12,13 @@
   "enchantment.progressions.pyromania": "Pyromania",
   "enchantment.progressions.pyromania.desc": "Deals 10% extra damage per level to entities on fire.",
   "enchantment.progressions.deep_miner": "Deep Miner",
-  "enchantment.progressions.deep_miner.desc": "Increases mining speed by 5% per level when below Y level 32."
+  "enchantment.progressions.deep_miner.desc": "Increases mining speed by 5% per level when below Y level 32.",
+  "enchantment.progressions.satiety": "Satiety",
+  "enchantment.progressions.satiety.desc": "10% chance per level to replenish hunger upon entity kill.",
+  "enchantment.progressions.glimmering": "Glimmering",
+  "enchantment.progressions.glimmering.desc": "Piglins won't target you as if you have gold armor effect.",
+  "enchantment.progressions.god_of_thunder": "God of Thunder",
+  "enchantment.progressions.god_of_thunder.desc": "5% chance per level for lightning strike on target.",
+  "enchantment.progressions.wisdom": "God of Thunder",
+  "enchantment.progressions.wisdom.desc": "Multiplies XP from blocks & kills by enchantment level."
 }

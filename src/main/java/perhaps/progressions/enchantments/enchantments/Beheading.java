@@ -29,11 +29,16 @@ public class Beheading extends Enchantment {
     }
 
     @Override
+    public int getMaxLevel() {
+        return 3;
+    }
+
+    @Override
     public int getMinCost(int level) { return EnchantmentRarity.EPIC.getMinCost(level); }
     @Override
     public int getMaxCost(int level) { return EnchantmentRarity.EPIC.getMaxCost(level); }
 
-    private final Map<EntityType<?>, Item> entityHeads = Map.of(
+    private static final Map<EntityType<?>, Item> entityHeads = Map.of(
             EntityType.ZOMBIE, Items.ZOMBIE_HEAD,
             EntityType.SKELETON, Items.SKELETON_SKULL,
             EntityType.CREEPER, Items.CREEPER_HEAD,
@@ -42,8 +47,9 @@ public class Beheading extends Enchantment {
             EntityType.PLAYER, Items.PLAYER_HEAD
     );
 
+    @SuppressWarnings("unused")
     @SubscribeEvent
-    public void onLivingDrops(LivingDropsEvent event) {
+    public static void onLivingDrops(LivingDropsEvent event) {
         Entity target = event.getEntityLiving();
         Entity attacker = event.getSource().getDirectEntity();
         BlockPos pos = target.blockPosition();

@@ -1,7 +1,8 @@
 package perhaps.progressions.enchantments.enchantments;
 
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -17,20 +18,20 @@ import perhaps.progressions.enchantments.EnchantmentRarity;
 import perhaps.progressions.enchantments.Enchantments;
 
 @Mod.EventBusSubscriber(modid = MythicProgressions.MOD_ID)
-public class Pyromania extends Enchantment {
-    public Pyromania(Rarity rarity, EnchantmentCategory enchantmentCategory, EquipmentSlot[] equipmentSlots) {
+public class GodOfThunder extends Enchantment {
+    public GodOfThunder(Rarity rarity, EnchantmentCategory enchantmentCategory, EquipmentSlot[] equipmentSlots) {
         super(rarity, enchantmentCategory, equipmentSlots);
     }
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return 5;
     }
 
     @Override
-    public int getMinCost(int level) { return EnchantmentRarity.EPIC.getMinCost(level); }
+    public int getMinCost(int level) { return EnchantmentRarity.GODLY.getMinCost(level); }
     @Override
-    public int getMaxCost(int level) { return EnchantmentRarity.EPIC.getMaxCost(level); }
+    public int getMaxCost(int level) { return EnchantmentRarity.GODLY.getMaxCost(level); }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
@@ -39,11 +40,17 @@ public class Pyromania extends Enchantment {
         LivingEntity entity = event.getEntityLiving();
         Level world = player.level;
         ItemStack heldItem = player.getMainHandItem();
-        int level = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.registeredEnchantments.get("pyromania"), heldItem);
-        if (level < 1 || world.isClientSide || heldItem.isEmpty() || !entity.isOnFire()) return;
+        ItemStack offhandItem = player.getOffhandItem();
+        Enchantment enchantment = Enchantments.registeredEnchantments.get("god_of_thunder");
+        int heldItemLevel = EnchantmentHelper.getItemEnchantmentLevel(enchantment, heldItem);
+        int offhandItemLevel = EnchantmentHelper.getItemEnchantmentLevel(enchantment, offhandItem);
+        if ((heldItemLevel < 1 && offhandItemLevel < 1) || world.isClientSide || heldItem.isEmpty()) return;
 
-        float damage = level * 2f;
-        DamageSource damageSource = DamageSource.mobAttack(player);
-        entity.hurt(damageSource, damage);
+        int level = (heldItemLevel < 1) ? heldItemLevel : offhandItemLevel;
+        if (world.getRandom().nextFloat() > (0.05f * level)) return;
+
+        LightningBolt lightning = new LightningBolt(EntityType.LIGHTNING_BOLT, world);
+        lightning.setPos(entity.getX(), entity.getY(), entity.getX());
+        world.addFreshEntity(lightning);
     }
 }

@@ -43,6 +43,7 @@ public class SmokeMastery extends Enchantment {
 
     private static final Map<Item, ItemStack> recipeCache = new HashMap<>();
 
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public static void onLivingDrops(LivingDropsEvent event) {
         Entity attacker = event.getSource().getDirectEntity();

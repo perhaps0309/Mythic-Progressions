@@ -26,10 +26,10 @@ public class Enchantments {
         enchantments.forEach((enchantmentName, enchantmentObject) -> {
             Enchantment.Rarity rarity = (Enchantment.Rarity) enchantmentObject.get("rarity");
             EnchantmentCategory category = (EnchantmentCategory) enchantmentObject.get("category");
-            EquipmentSlot equipmentSlot = (EquipmentSlot) enchantmentObject.get("equipmentSlot");
+            EquipmentSlot[] equipmentSlots = (EquipmentSlot[]) enchantmentObject.get("equipmentSlot");
             EnchantmentCallback callback = (EnchantmentCallback) enchantmentObject.get("callback");
 
-            addEnchantment(enchantmentName, rarity, category, new EquipmentSlot[] { equipmentSlot }, callback);
+            addEnchantment(enchantmentName, rarity, category, equipmentSlots, callback);
         });
 
         ENCHANTMENTS.register(eventBus);
@@ -39,38 +39,62 @@ public class Enchantments {
             Map.entry("auto_smelt", Map.of(
                     "rarity", Enchantment.Rarity.RARE,
                     "category", EnchantmentCategory.DIGGER,
-                    "equipmentSlot", EquipmentSlot.MAINHAND,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.MAINHAND },
                     "callback", (EnchantmentCallback) AutoSmelt::new
             )),
             Map.entry("smoke_mastery", Map.of(
                     "rarity", Enchantment.Rarity.VERY_RARE,
                     "category", EnchantmentCategory.WEAPON,
-                    "equipmentSlot", EquipmentSlot.MAINHAND,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.MAINHAND },
                     "callback", (EnchantmentCallback) SmokeMastery::new
             )),
             Map.entry("deep_miner", Map.of(
                     "rarity", Enchantment.Rarity.RARE,
                     "category", EnchantmentCategory.DIGGER,
-                    "equipmentSlot", EquipmentSlot.MAINHAND,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.MAINHAND },
                     "callback", (EnchantmentCallback) DeepMiner::new
             )),
             Map.entry("beheading", Map.of(
                     "rarity", Enchantment.Rarity.VERY_RARE,
                     "category", EnchantmentCategory.WEAPON,
-                    "equipmentSlot", EquipmentSlot.MAINHAND,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.MAINHAND },
                     "callback", (EnchantmentCallback) Beheading::new
             )),
             Map.entry("stone_breaker", Map.of(
                     "rarity", Enchantment.Rarity.UNCOMMON,
                     "category", EnchantmentCategory.DIGGER,
-                    "equipmentSlot", EquipmentSlot.MAINHAND,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.MAINHAND },
                     "callback", (EnchantmentCallback) StoneBreaker::new
             )),
             Map.entry("pyromania", Map.of(
                     "rarity", Enchantment.Rarity.RARE,
                     "category", EnchantmentCategory.WEAPON,
-                    "equipmentSlot", EquipmentSlot.MAINHAND,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.MAINHAND },
                     "callback", (EnchantmentCallback) Pyromania::new
+            )),
+            Map.entry("satiety", Map.of(
+                    "rarity", Enchantment.Rarity.VERY_RARE,
+                    "category", EnchantmentCategory.WEAPON,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.MAINHAND },
+                    "callback", (EnchantmentCallback) Satiety::new
+            )),
+            Map.entry("glimmering", Map.of(
+                    "rarity", Enchantment.Rarity.VERY_RARE,
+                    "category", EnchantmentCategory.ARMOR,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET },
+                    "callback", (EnchantmentCallback) Glimmering::new
+            )),
+            Map.entry("god_of_thunder", Map.of(
+                    "rarity", Enchantment.Rarity.VERY_RARE,
+                    "category", EnchantmentCategory.WEAPON,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND },
+                    "callback", (EnchantmentCallback) GodOfThunder::new
+            )),
+            Map.entry("wisdom", Map.of(
+                    "rarity", Enchantment.Rarity.VERY_RARE,
+                    "category", EnchantmentCategory.WEAPON,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.MAINHAND },
+                    "callback", (EnchantmentCallback) Wisdom::new
             ))
     );
 

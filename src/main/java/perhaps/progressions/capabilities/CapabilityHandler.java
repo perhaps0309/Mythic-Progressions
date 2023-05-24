@@ -6,7 +6,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import perhaps.progressions.MythicProgressions;
@@ -17,6 +16,7 @@ import perhaps.progressions.capabilities.skills.SkillProvider;
 
 @Mod.EventBusSubscriber(modid = MythicProgressions.MOD_ID)
 public class CapabilityHandler {
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public static void attachCapability(AttachCapabilitiesEvent<Entity> event) {
         if (!(event.getObject() instanceof Player)) return;
@@ -25,6 +25,7 @@ public class CapabilityHandler {
         event.addCapability(new ResourceLocation(MythicProgressions.MOD_ID, "player_perks"), new PerkProvider());
     }
 
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public static void onPlayerCloned(PlayerEvent.Clone event) {
         if (!event.isWasDeath()) return;
@@ -46,6 +47,7 @@ public class CapabilityHandler {
         });
     }
 
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
         event.register(Skill.class);
