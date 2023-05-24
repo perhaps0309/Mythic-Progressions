@@ -53,9 +53,10 @@ public class Wisdom extends Enchantment {
         Player player = event.getAttackingPlayer();
         if (player == null) return;
 
+        Level world = player.level;
         ItemStack heldItem = player.getMainHandItem();
         int level = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.registeredEnchantments.get("wisdom"), heldItem);
-        if (level < 1) return;
+        if (level < 1 || world.isClientSide || heldItem.isEmpty()) return;
 
         int bonusXP = (event.getDroppedExperience() + 1) * level;
         event.setDroppedExperience(event.getDroppedExperience() + bonusXP);
