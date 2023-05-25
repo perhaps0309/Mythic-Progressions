@@ -39,7 +39,7 @@ public class Airborne extends Enchantment {
         if (!(event.getEntityLiving() instanceof Player player)) return;
 
         Level world = player.level;
-        ItemStack item = player.getSlot(100).get();
+        ItemStack item = player.getItemBySlot(EquipmentSlot.FEET);
         int level = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.registeredEnchantments.get("airborne"), item);
         if (level < 1 || world.isClientSide || event.getSource() != DamageSource.FALL) return;
 

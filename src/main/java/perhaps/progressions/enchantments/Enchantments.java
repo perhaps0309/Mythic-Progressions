@@ -110,9 +110,27 @@ public class Enchantments {
             )),
             Map.entry("bounty_hunter", Map.of(
                     "rarity", Enchantment.Rarity.RARE,
-                    "category", EnchantmentCategory.ARMOR,
+                    "category", EnchantmentCategory.WEAPON,
                     "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.MAINHAND },
                     "callback", (EnchantmentCallback) BountyHunter::new
+            )),
+            Map.entry("magnetism", Map.of(
+                    "rarity", Enchantment.Rarity.RARE,
+                    "category", EnchantmentCategory.WEAPON,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.MAINHAND },
+                    "callback", (EnchantmentCallback) Magnetism::new
+            )),
+            Map.entry("sugar_rush", Map.of(
+                    "rarity", Enchantment.Rarity.RARE,
+                    "category", EnchantmentCategory.ARMOR,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET },
+                    "callback", (EnchantmentCallback) SugarRush::new
+            )),
+            Map.entry("nimble_feet", Map.of(
+                    "rarity", Enchantment.Rarity.UNCOMMON,
+                    "category", EnchantmentCategory.ARMOR,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.FEET },
+                    "callback", (EnchantmentCallback) NimbleFeet::new
             ))
     );
 

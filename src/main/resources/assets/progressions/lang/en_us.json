@@ -26,5 +26,11 @@
   "enchantment.progressions.airborne": "Airborne",
   "enchantment.progressions.airborne.desc": "Increases jump height by 1 block per level and reduces fall damage by 25% per level.",
   "enchantment.progressions.bounty_hunter": "Bounty Hunter",
-  "enchantment.progressions.bounty_hunger.desc": "5% chance per level to double mob loot drops."
+  "enchantment.progressions.bounty_hunger.desc": "5% chance per level to double mob loot drops.",
+  "enchantment.progressions.magnetism": "Magnetism",
+  "enchantment.progressions.magnetism.desc": "Instantly pickup any blocks you break or entities that you kill.",
+  "enchantment.progressions.nimble_feet": "Nimble Feet",
+  "enchantment.progressions.nimble_feet.desc": "Increases movement speed by 5% per level.",
+  "enchantment.progressions.sugar_rush": "Sugar Rush",
+  "enchantment.progressions.sugar_rush.desc": "After killing an entity, gain 5% movement speed and 1 extra jump height per level for 5 seconds."
 }

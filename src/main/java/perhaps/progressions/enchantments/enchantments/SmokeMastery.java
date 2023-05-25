@@ -46,16 +46,15 @@ public class SmokeMastery extends Enchantment {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void onLivingDrops(LivingDropsEvent event) {
-        Entity attacker = event.getSource().getDirectEntity();
-        Collection<ItemEntity> entityDrops = event.getDrops();
-        if (!(attacker instanceof Player player)) return;
+        if (!(event.getSource().getDirectEntity() instanceof Player player)) return;
 
         Level world = player.level;
         ItemStack heldItem = player.getMainHandItem();
         int level = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.registeredEnchantments.get("smoke_mastery"), heldItem);
         if (level < 1 || world.isClientSide || heldItem.isEmpty()) return;
 
-        for (ItemEntity itemEntity : entityDrops) {
+        Collection<ItemEntity> entityDrops = event.getDrops();
+        entityDrops.forEach((itemEntity -> {
             ItemStack drop = itemEntity.getItem();
             Item dropItem = drop.getItem();
 
@@ -86,6 +85,6 @@ public class SmokeMastery extends Enchantment {
             int extraDupe = world.getRandom().nextFloat() > (0.05f * level) ? 4 : 2;
             if (extraDupe == 4 && (world.getRandom().nextFloat() > 0.05f * level)) extraDupe = 8;
             tempItem.setCount(count * extraDupe);
-        }
+        }));
     }
 }
