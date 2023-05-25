@@ -95,6 +95,24 @@ public class Enchantments {
                     "category", EnchantmentCategory.WEAPON,
                     "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.MAINHAND },
                     "callback", (EnchantmentCallback) Wisdom::new
+            )),
+            Map.entry("nocturnal", Map.of(
+                    "rarity", Enchantment.Rarity.RARE,
+                    "category", EnchantmentCategory.ARMOR,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET },
+                    "callback", (EnchantmentCallback) Nocturnal::new
+            )),
+            Map.entry("airborne", Map.of(
+                    "rarity", Enchantment.Rarity.RARE,
+                    "category", EnchantmentCategory.ARMOR,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.FEET },
+                    "callback", (EnchantmentCallback) Airborne::new
+            )),
+            Map.entry("bounty_hunter", Map.of(
+                    "rarity", Enchantment.Rarity.RARE,
+                    "category", EnchantmentCategory.ARMOR,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.MAINHAND },
+                    "callback", (EnchantmentCallback) BountyHunter::new
             ))
     );
 

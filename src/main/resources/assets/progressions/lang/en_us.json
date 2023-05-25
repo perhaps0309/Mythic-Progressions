@@ -20,5 +20,11 @@
   "enchantment.progressions.god_of_thunder": "God of Thunder",
   "enchantment.progressions.god_of_thunder.desc": "5% chance per level for lightning strike on target.",
   "enchantment.progressions.wisdom": "Wisdom",
-  "enchantment.progressions.wisdom.desc": "Multiplies XP from blocks & kills by enchantment level."
+  "enchantment.progressions.wisdom.desc": "Multiplies XP from blocks & kills by enchantment level.",
+  "enchantment.progressions.nocturnal": "Nocturnal",
+  "enchantment.progressions.nocturnal.desc": "Turn invisible for 5 seconds when damaged at night.",
+  "enchantment.progressions.airborne": "Airborne",
+  "enchantment.progressions.airborne.desc": "Increases jump height by 1 block per level and reduces fall damage by 25% per level.",
+  "enchantment.progressions.bounty_hunter": "Bounty Hunter",
+  "enchantment.progressions.bounty_hunger.desc": "5% chance per level to double mob loot drops."
 }

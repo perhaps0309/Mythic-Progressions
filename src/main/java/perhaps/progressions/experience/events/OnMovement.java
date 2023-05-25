@@ -1,6 +1,5 @@
 package perhaps.progressions.experience.events;
 
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -15,8 +14,7 @@ public class OnMovement {
     @SuppressWarnings("unused")
     @SubscribeEvent
     public static void onLivingJump(LivingEvent.LivingJumpEvent event) {
-        Entity entity = event.getEntity();
-        if (!(entity instanceof Player player)) return;
+        if (!(event.getEntity() instanceof Player player)) return;
 
         grantXP(player, "athletics", "perk", -0.5f);
     }
