@@ -1,17 +1,21 @@
 package perhaps.progressions.skills;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import perhaps.progressions.MythicProgressions;
 import perhaps.progressions.capabilities.skills.Skill;
 import perhaps.progressions.capabilities.skills.SkillProvider;
 import perhaps.progressions.client.gui.WheelSelectionManager;
 import perhaps.progressions.client.gui.scroll_wheels.ScrollWheel;
 import perhaps.progressions.client.gui.scroll_wheels.WheelOption;
+import perhaps.progressions.skills.skills.Lumberjack;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 import static perhaps.progressions.client.gui.WheelSelectionManager.*;
 import static perhaps.progressions.client.gui.scroll_wheels.WheelSelectionScreen.*;
+
 public class Skills {
     public void initializeSkills() {
         skills.forEach((skillName, skillObject) -> {
@@ -131,11 +135,9 @@ public class Skills {
             )),
             Map.entry("lumberjack", Map.of( // XP Done
                     "displayName", "Lumberjack",
-                    "description", "Improves your efficiency and speed when chopping down trees.",
+                    "description", "Improves your speed when chopping down trees.",
                     "saveName", "lumberjack",
-                    "callback", (Runnable) () -> {
-                        System.out.println("Pressed!");
-                    }
+                    "callback", (Runnable) Lumberjack::new
             )),
             Map.entry("auto_compression", Map.of(
                     "displayName", "Auto Compression",
@@ -147,8 +149,13 @@ public class Skills {
             ))
     );
 
-    public static Skill getSkill(String name) {
-        Map<String, Skill> skills = globalPlayer.getCapability(SkillProvider.playerSkillsCapability).orElseThrow(() -> new IllegalStateException("Cannot get the skills capability from the player!"));
+    public static Skill getSkill(String name, @Nullable Player player) {
+        Map<String, Skill> skills;
+        if (player == null) {
+            skills = globalPlayer.getCapability(SkillProvider.playerSkillsCapability).orElseThrow(() -> new IllegalStateException("Cannot get the skills capability from the player! 1"));
+        } else {
+            skills = player.getCapability(SkillProvider.playerSkillsCapability).orElseThrow(() -> new IllegalStateException("Cannot get the skills capability from the player! 2"));
+        }
 
         return skills.get(name);
     }
@@ -163,35 +170,34 @@ public class Skills {
             }));
 
             WheelOption levelUpOption = new WheelOption(SKILL_UPGRADE, "Level Up", "Level up your skill", () -> {
-                Skill tempSkill = getSkill(saveName);
-                float currentXP = tempSkill.get("xp");
-                float currentLevel = tempSkill.get("level");
-                float neededXp = tempSkill.get("neededXp");
+                Skill skill = getSkill(saveName, null);
+                float currentXP = skill.get("xp");
+                float currentLevel = skill.get("level");
+                float neededXp = skill.get("neededXp");
                 if (currentLevel == 10) return;
                 if (currentXP >= neededXp) {
-                    tempSkill.add("level", 1f);
-                    tempSkill.subtract("xp", neededXp);
+                    skill.add("level", 1f);
+                    skill.subtract("xp", neededXp);
                 }
             });
 
             levelUpOption.addSound(1.0f, LEVEL_UP_SOUND, true, () -> {
-                Skill tempSkill = getSkill(saveName);
-                float currentXP = tempSkill.get("xp");
-                float currentLevel = tempSkill.get("level");
-                float neededXp = tempSkill.get("neededXp");
+                Skill skill = getSkill(saveName, null);
+                float currentXP = skill.get("xp");
+                float currentLevel = skill.get("level");
+                float neededXp = skill.get("neededXp");
                 if (currentLevel == 10) return false;
 
                 return currentXP >= neededXp;
             });
 
             WheelOption skillInfoOption = new WheelOption(SKILL_INFORMATION, displayName, "Prestige: null\nLevel: null/10\nXP: null/null", () -> {});
-
             skillInfoOption.addHover(() -> {
-                Skill tempSkill = getSkill(saveName);
-                float currentXP = tempSkill.get("xp");
-                float currentLevel = tempSkill.get("level");
-                float currentPrestige = tempSkill.get("prestige");
-                float neededXp = tempSkill.get("neededXp");
+                Skill skill = getSkill(saveName, null);
+                float currentXP = skill.get("xp");
+                float currentLevel = skill.get("level");
+                float currentPrestige = skill.get("prestige");
+                float neededXp = skill.get("neededXp");
 
                 skillInfoOption.description = String.format("Prestige: %.0f\nLevel: %.0f/10\nXP: %.1f/%.1f", currentPrestige, currentLevel, currentXP, neededXp);
             });

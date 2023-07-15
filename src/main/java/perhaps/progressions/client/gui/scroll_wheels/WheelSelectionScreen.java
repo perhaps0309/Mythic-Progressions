@@ -212,7 +212,7 @@ public class WheelSelectionScreen extends Screen {
         int adjustedRadius = isSelected ? wheelRadius + 3 : wheelRadius;
         int x = centerX + (int) (Math.cos(Math.toRadians(angle)) * adjustedRadius);
         int y = centerY + (int) (Math.sin(Math.toRadians(angle)) * adjustedRadius);
-        int iconSize = isSelected ? 24 : 20;  // Increase icon size when selected
+        int iconSize = isSelected ? 22 : 20;  // Increase icon size when selected
 
         Float rotation = option.rotation;
         if (rotation == null) {

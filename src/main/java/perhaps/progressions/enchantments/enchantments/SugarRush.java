@@ -10,7 +10,7 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -47,7 +47,7 @@ public class SugarRush extends Enchantment {
 
     @SuppressWarnings("unused")
     @SubscribeEvent
-    public static void onLivingDrops(LivingDropsEvent event) {
+    public static void onLivingDeath(LivingDeathEvent event) {
         if (!(event.getSource().getDirectEntity() instanceof Player player)) return;
 
         Level world = player.level;
@@ -59,7 +59,8 @@ public class SugarRush extends Enchantment {
         });
         if (highestLevel.get() < 1 || world.isClientSide) return;
 
-        float movementSpeedBonus = 0.05f * highestLevel.get();
+        float movementSpeedBonus = 0.10f * highestLevel.get();
+        playersAffected.add(player.getUUID());
         movementSpeedAttribute.addTransientModifier(
                 new AttributeModifier(SUGAR_RUSH_MOVEMENT_SPEED_MODIFIER, "Sugar rush movement speed bonus", movementSpeedBonus, AttributeModifier.Operation.MULTIPLY_TOTAL)
         );

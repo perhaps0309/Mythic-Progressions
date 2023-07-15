@@ -22,8 +22,12 @@ public class PerkProvider implements ICapabilityProvider, INBTSerializable<Compo
     private Map<String, Perk> createPlayerPerks() {
         if (this.playerPerks == null) {
             this.playerPerks = Map.ofEntries(
-                    Map.entry("testing", new Perk()),
-                    Map.entry("testing2", new Perk())
+                    Map.entry("miners_instinct", new Perk()),
+                    Map.entry("warriors_might", new Perk()),
+                    Map.entry("archers_precision", new Perk()),
+                    Map.entry("farmers_bounty", new Perk()),
+                    Map.entry("alchemists_wisdom", new Perk()),
+                    Map.entry("wizards_sorcery", new Perk())
             );
         }
 

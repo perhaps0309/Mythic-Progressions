@@ -2,23 +2,24 @@ package perhaps.progressions.enchantments.enchantments;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import perhaps.progressions.MythicProgressions;
 import perhaps.progressions.enchantments.EnchantmentRarity;
 import perhaps.progressions.enchantments.Enchantments;
 
+import java.util.*;
+
 @Mod.EventBusSubscriber(modid = MythicProgressions.MOD_ID)
-public class Pyromania extends Enchantment {
-    public Pyromania(Rarity rarity, EnchantmentCategory enchantmentCategory, EquipmentSlot[] equipmentSlots) {
+public class AtomicResistance extends Enchantment {
+    public AtomicResistance(Rarity rarity, EnchantmentCategory enchantmentCategory, EquipmentSlot[] equipmentSlots) {
         super(rarity, enchantmentCategory, equipmentSlots);
     }
 
@@ -28,22 +29,27 @@ public class Pyromania extends Enchantment {
     }
 
     @Override
-    public int getMinCost(int level) { return EnchantmentRarity.EPIC.getMinCost(level); }
+    public int getMinCost(int level) {
+        return EnchantmentRarity.LEGENDARY.getMinCost(level);
+    }
+
     @Override
-    public int getMaxCost(int level) { return EnchantmentRarity.EPIC.getMaxCost(level); }
+    public int getMaxCost(int level) {
+        return EnchantmentRarity.LEGENDARY.getMaxCost(level);
+    }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
-    public static void onAttackEntity(AttackEntityEvent event) {
-        Player player = event.getPlayer();
-        LivingEntity entity = event.getEntityLiving();
-        Level world = player.level;
-        ItemStack heldItem = player.getMainHandItem();
-        int level = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.registeredEnchantments.get("pyromania"), heldItem);
-        if (level < 1 || world.isClientSide || heldItem.isEmpty() || !entity.isOnFire()) return;
+    public static void onLivingHurt(LivingHurtEvent event) {
+        if (!(event.getEntityLiving() instanceof Player player)) return;
 
-        float damage = level * 2f;
-        DamageSource damageSource = DamageSource.mobAttack(player);
-        entity.hurt(damageSource, damage);
+        Level world = player.level;
+        ItemStack item = player.getItemBySlot(EquipmentSlot.FEET);
+        int level = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.registeredEnchantments.get("airborne"), item);
+        if (level < 1 || world.isClientSide || event.getSource().isExplosion()) return;
+
+        float amount = event.getAmount();
+        float newAmount = amount - (amount * (0.15f * level));
+        event.setAmount(newAmount);
     }
 }

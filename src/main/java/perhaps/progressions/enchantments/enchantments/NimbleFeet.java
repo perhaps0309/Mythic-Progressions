@@ -1,5 +1,9 @@
 package perhaps.progressions.enchantments.enchantments;
 
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -10,14 +14,18 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import perhaps.progressions.MythicProgressions;
 import perhaps.progressions.enchantments.EnchantmentRarity;
 import perhaps.progressions.enchantments.Enchantments;
 
 import java.util.Objects;
 import java.util.UUID;
 
+@Mod.EventBusSubscriber(modid = MythicProgressions.MOD_ID)
 public class NimbleFeet extends Enchantment {
     public NimbleFeet(Rarity rarity, EnchantmentCategory enchantmentCategory, EquipmentSlot[] equipmentSlots) {
         super(rarity, enchantmentCategory, equipmentSlots);
@@ -48,7 +56,8 @@ public class NimbleFeet extends Enchantment {
         AttributeInstance movementSpeedAttribute = Objects.requireNonNull(player.getAttribute(Attributes.MOVEMENT_SPEED));
         ItemStack boots = player.getItemBySlot(EquipmentSlot.FEET);
         int level = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.registeredEnchantments.get("nimble_feet"), boots);
-        if (level < 1 || world.isClientSide) {
+        if (world.isClientSide) return;
+        if (level < 1) {
             if (movementSpeedAttribute.getModifier(NIMBLE_FEET_MOVEMENT_SPEED_MODIFIER) != null) {
                 Objects.requireNonNull(player.getAttribute(Attributes.MOVEMENT_SPEED)).removeModifier(NIMBLE_FEET_MOVEMENT_SPEED_MODIFIER);
             }

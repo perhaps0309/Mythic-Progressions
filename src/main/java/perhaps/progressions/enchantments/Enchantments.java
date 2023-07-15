@@ -20,21 +20,9 @@ public class Enchantments {
         void run(Enchantment.Rarity rarity, EnchantmentCategory category, EquipmentSlot[] equipmentSlots);
     }
 
+    public static Map<String, Enchantment> registeredEnchantments = new HashMap<>();
+
     private static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, MythicProgressions.MOD_ID);
-
-    public static void initializeEnchantments(IEventBus eventBus) {
-        enchantments.forEach((enchantmentName, enchantmentObject) -> {
-            Enchantment.Rarity rarity = (Enchantment.Rarity) enchantmentObject.get("rarity");
-            EnchantmentCategory category = (EnchantmentCategory) enchantmentObject.get("category");
-            EquipmentSlot[] equipmentSlots = (EquipmentSlot[]) enchantmentObject.get("equipmentSlot");
-            EnchantmentCallback callback = (EnchantmentCallback) enchantmentObject.get("callback");
-
-            addEnchantment(enchantmentName, rarity, category, equipmentSlots, callback);
-        });
-
-        ENCHANTMENTS.register(eventBus);
-    }
-
     private static final Map<String, Map<String, Object>> enchantments = Map.ofEntries(
             Map.entry("auto_smelt", Map.of(
                     "rarity", Enchantment.Rarity.RARE,
@@ -131,10 +119,52 @@ public class Enchantments {
                     "category", EnchantmentCategory.ARMOR,
                     "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.FEET },
                     "callback", (EnchantmentCallback) NimbleFeet::new
+            )),
+            Map.entry("ender_mind", Map.of(
+                    "rarity", Enchantment.Rarity.RARE,
+                    "category", EnchantmentCategory.ARMOR,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET },
+                    "callback", (EnchantmentCallback) EnderMind::new
+            )),
+            Map.entry("paralysis", Map.of(
+                    "rarity", Enchantment.Rarity.RARE,
+                    "category", EnchantmentCategory.ARMOR,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND },
+                    "callback", (EnchantmentCallback) Paralysis::new
+            )),
+            Map.entry("atomic_resistance", Map.of(
+                    "rarity", Enchantment.Rarity.VERY_RARE,
+                    "category", EnchantmentCategory.ARMOR,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.CHEST },
+                    "callback", (EnchantmentCallback) AtomicResistance::new
+            )),
+            Map.entry("lifestealer", Map.of(
+                    "rarity", Enchantment.Rarity.VERY_RARE,
+                    "category", EnchantmentCategory.ARMOR,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.CHEST },
+                    "callback", (EnchantmentCallback) Lifestealer::new
+            )),
+            Map.entry("blazing_aura", Map.of(
+                    "rarity", Enchantment.Rarity.VERY_RARE,
+                    "category", EnchantmentCategory.ARMOR,
+                    "equipmentSlot", new EquipmentSlot[] { EquipmentSlot.CHEST },
+                    "callback", (EnchantmentCallback) BlazingAura::new
             ))
     );
 
-    public static Map<String, Enchantment> registeredEnchantments = new HashMap<>();
+
+    public static void initializeEnchantments(IEventBus eventBus) {
+        enchantments.forEach((enchantmentName, enchantmentObject) -> {
+            Enchantment.Rarity rarity = (Enchantment.Rarity) enchantmentObject.get("rarity");
+            EnchantmentCategory category = (EnchantmentCategory) enchantmentObject.get("category");
+            EquipmentSlot[] equipmentSlots = (EquipmentSlot[]) enchantmentObject.get("equipmentSlot");
+            EnchantmentCallback callback = (EnchantmentCallback) enchantmentObject.get("callback");
+
+            addEnchantment(enchantmentName, rarity, category, equipmentSlots, callback);
+        });
+
+        ENCHANTMENTS.register(eventBus);
+    }
 
     public static void addEnchantment(String enchantmentName, Enchantment.Rarity rarity, EnchantmentCategory category, EquipmentSlot[] equipmentSlots, EnchantmentCallback callback) {
         ENCHANTMENTS.register(enchantmentName, () -> {

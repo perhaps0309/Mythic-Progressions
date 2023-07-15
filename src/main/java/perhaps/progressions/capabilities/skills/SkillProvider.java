@@ -35,7 +35,8 @@ public class SkillProvider implements ICapabilityProvider, INBTSerializable<Comp
                     Map.entry("swordsmanship", new Skill()),
                     Map.entry("athletics", new Skill()),
                     Map.entry("excavation", new Skill()),
-                    Map.entry("lumberjack", new Skill())
+                    Map.entry("lumberjack", new Skill()),
+                    Map.entry("auto_compression", new Skill())
             );
         }
 

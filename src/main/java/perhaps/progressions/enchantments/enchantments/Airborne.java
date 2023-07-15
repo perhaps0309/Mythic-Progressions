@@ -10,12 +10,15 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import perhaps.progressions.MythicProgressions;
 import perhaps.progressions.enchantments.EnchantmentRarity;
 import perhaps.progressions.enchantments.Enchantments;
+
+import java.util.*;
 
 @Mod.EventBusSubscriber(modid = MythicProgressions.MOD_ID)
 public class Airborne extends Enchantment {
@@ -32,6 +35,10 @@ public class Airborne extends Enchantment {
     public int getMinCost(int level) { return EnchantmentRarity.RARE.getMinCost(level); }
     @Override
     public int getMaxCost(int level) { return EnchantmentRarity.RARE.getMaxCost(level); }
+
+    // The fall event appears to fire twice when a player falls, so we set it to how many times it should run & subtracting
+    // unwanted fall damage as a result of the player jumping higher with this enchantment.
+    private static final Map<UUID, Integer> playerFallEventCounts = new HashMap<>();
 
     @SuppressWarnings("unused")
     @SubscribeEvent
@@ -64,7 +71,20 @@ public class Airborne extends Enchantment {
 
         Vec3 playerMovement = player.getDeltaMovement();
         player.setDeltaMovement(playerMovement.x, playerMovement.y + (0.25 * level), playerMovement.z);
-        player.invulnerableTime = 45;
         player.hurtMarked = true;
+        playerFallEventCounts.put(player.getUUID(), 2);
+    }
+
+    @SuppressWarnings("unused")
+    @SubscribeEvent
+    public static void onLivingFall(LivingFallEvent event) {
+        if (!(event.getEntityLiving() instanceof Player player)) return;
+        if (!playerFallEventCounts.containsKey(player.getUUID())) return;
+
+        int playerFallEventCount = playerFallEventCounts.get(player.getUUID());
+        if (playerFallEventCount <= 0) return;
+
+        playerFallEventCounts.replace(player.getUUID(), playerFallEventCount - 1);
+        event.setDistance(event.getDistance() - 3);
     }
 }
